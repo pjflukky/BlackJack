@@ -19,12 +19,12 @@
 void screen_display_stats_funds(int16_t funds, uint16_t fcolor)
 {
     // initialize all associate character
-    image_t *F = (image_t *)malloc(sizeof(image_t));
-    image_t *U = (image_t *)malloc(sizeof(image_t));
-    image_t *N = (image_t *)malloc(sizeof(image_t));
-    image_t *D = (image_t *)malloc(sizeof(image_t));
-    image_t *S = (image_t *)malloc(sizeof(image_t));
-    image_t *colon = (image_t *)malloc(sizeof(image_t));
+    image_t *F;
+    image_t *U;
+    image_t *N;
+    image_t *D;
+    image_t *S;
+    image_t *colon;
 
     // get character image
     font_get_image('F', F);
@@ -101,25 +101,28 @@ void screen_display_stats_funds(int16_t funds, uint16_t fcolor)
         colon->bcolor,
         false);
 
-        free(F);
-        free(U);
-        free(N);
-        free(D);
-        free(S);
-        free(colon);
-
         /// the following code will be stat funds ///
         char str[6] = {0};
         itoa(funds, str, 10); // change integer to string array
       
         for(int i = 0; str[i] != NULL; i++){
             // initialize number character pointer 
-            image_t *C = (image_t *)malloc(sizeof(image_t));
+            image_t *C;
             font_get_image(str[i], C);
+
+            // draw the rectangle
+            lcd_draw_rectangle(
+                LOC_GAME_STATS_FUNDS_X - 4 + (i*20),
+                C->width + 8,
+                LOC_GAME_STATS_FUNDS_Y - 4,
+                C->height + 8,
+                0x0000,
+                false);
+
 
             // draw the character
             lcd_draw_image(
-                LOC_GAME_STATS_FUNDS_X + (i*15),
+                LOC_GAME_STATS_FUNDS_X + (i*20),
                 LOC_GAME_STATS_FUNDS_Y,
                 C->width,
                 C->height,
@@ -128,7 +131,6 @@ void screen_display_stats_funds(int16_t funds, uint16_t fcolor)
                 C->bcolor,
                 false);
 
-            free(C);
         }
 }
 
@@ -210,6 +212,16 @@ void screen_display_stats_bet(int16_t bet, uint16_t fcolor)
             image_t *C = (image_t *)malloc(sizeof(image_t));
             font_get_image(str[i], C);
 
+             // draw the rectangle
+             lcd_draw_rectangle(
+                LOC_GAME_STATS_BET_X + (i*15),
+                C->width + 4,
+                LOC_GAME_STATS_BET_Y,
+                C->height + 4,
+                0x0000,
+                false);
+
+
             // draw the character
             lcd_draw_image(
                 LOC_GAME_STATS_BET_X + (i*15),
@@ -242,6 +254,15 @@ void screen_display_stats_dealer_hand(int16_t hand_value, uint16_t fcolor)
          image_t *C = (image_t *)malloc(sizeof(image_t));
          font_get_image(str[i], C);
 
+          // draw the rectangle
+          lcd_draw_rectangle(
+            LOC_GAME_STATS_DEALER_HAND_X + (i*15),
+            C->width + 4,
+            LOC_GAME_STATS_DEALER_HAND_Y,
+            C->height + 4,
+            0x0000,
+            false);
+
          // draw the character
          lcd_draw_image(
             LOC_GAME_STATS_DEALER_HAND_X + (i*15),
@@ -273,6 +294,15 @@ void screen_display_stats_player_hand(int16_t hand_value, uint16_t fcolor)
         // initialize number character pointer 
         image_t *C = (image_t *)malloc(sizeof(image_t));
         font_get_image(str[i], C);
+
+        // draw the rectangle
+        lcd_draw_rectangle(
+            LOC_GAME_STATS_PLAYER_HAND_X + (i*15),
+            C->width + 4,
+            LOC_GAME_STATS_PLAYER_HAND_Y,
+            C->height + 4,
+            0x0000,
+            false);
 
         // draw the character
         lcd_draw_image(

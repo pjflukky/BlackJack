@@ -3903,10 +3903,12 @@ const FONT_CHAR_INFO bebasNeue_28ptDescriptors[] =
 bool font_get_image(char c, image_t *image)
 {
 
+	// Given code to make sure we have the right ASCII index
 	uint8_t index = c - '!';
 	if (index > ('~' - '!')){
 		return false;
 	}
+	//Set the offset and bitmap address amd other fields
 	uint16_t bitmap_offset = bebasNeue_28ptDescriptors[index].offset;
 	uint8_t *bitmap_addr = (uint8_t *) & bebasNeue_28ptBitmaps[bitmap_offset];
 	image->bitmap = bitmap_addr;

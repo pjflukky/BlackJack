@@ -22,11 +22,16 @@
 
 bool card_draw(card_t *card)
 {
+
+    // Check to make sure it is a card
     if (!card)
+    {
         return false;
-
-
+    }
+    // Initialize the x coordinate based on hand_index
     uint16_t x_center;
+
+    // Change the center of the card based on the hand_index(how many times the button has been clicked)
     switch (card->hand_index)
     {
     case 0:
@@ -51,10 +56,12 @@ bool card_draw(card_t *card)
         x_center = CARD_VL_X6_CENTER;
         break;
     default:
-        return false; 
+        return false;
     }
-    image_t *card_suit_info = image_get_info(card->suit, card);
-    image_t *card_id_info = image_get_info(card->card_id, card);
+
+    //     int card_suit_width = 0;
+    // int card_suit_height= 0;
+    // uint8_t *card_suit_bitmap;
 
     // Draw outer border
     lcd_draw_rectangle(
@@ -63,7 +70,7 @@ bool card_draw(card_t *card)
         CARD_HL_Y_CENTER - (CARD_Y_OUTER_HEIGHT / 2), // y start
         CARD_Y_OUTER_HEIGHT,
         card->border_color,
-        true);
+        false);
 
     // Draw inner white rectangle
     lcd_draw_rectangle(
@@ -72,39 +79,141 @@ bool card_draw(card_t *card)
         CARD_HL_Y_CENTER - (CARD_Y_INNER_HEIGHT / 2), // y start
         CARD_Y_INNER_HEIGHT,
         LCD_COLOR_WHITE,
-        true);
+        false);
 
-    // Draw suit at center
-    lcd_draw_image(x_center,
-                   CARD_HL_Y_CENTER,
-                   card_suit_info->width,
-                   card_suit_info->height,
-                   card_suit_info,
-                   LCD_COLOR_BLACK,
-                   LCD_COLOR_WHITE,
-                   true);
+    // Create the image of the number/letter of the card
+    image_t card_id_image;
+    font_get_image(card->card_id, &card_id_image);
 
+    // If the Suit is a heart, draw based accordingly on width, height, and bitmap
+    if (card->suit == IMAGE_TYPE_HEART)
+    {
+        // Draw suit at center
+        lcd_draw_image(x_center,
+                       CARD_HL_Y_CENTER,
+                       IMAGE_PIXELS_WIDTH_HEART,
+                       IMAGE_PIXELS_HEIGHT_HEART,
+                       IMAGE_BITMAP_HEART,
+                       LCD_COLOR_RED,
+                       LCD_COLOR_WHITE,
+                       true);
 
-    // Draw card value at top left using lcd_draw_image
-    lcd_draw_image(x_center - CARD_VL_X_TEXT_DELTA, 
-                   CARD_HL_Y_UPPER,                 
-                   card_id_info->width,
-                   card_id_info->height,
-                   card_id_info,                  
-                   LCD_COLOR_RED,                   
-                   LCD_COLOR_WHITE,                 
-                   true                             
-    );
-    // Draw card value at bottom right using lcd_draw_image
-    lcd_draw_image(x_center + CARD_VL_X_TEXT_DELTA, 
-                   CARD_HL_Y_LOWER,                 
-                   card_id_info->width,
-                   card_id_info->height,
-                   card_id_info,                   
-                   LCD_COLOR_RED,                  
-                   LCD_COLOR_WHITE,                
-                   true                            
-    );
+        // Draw card value at top left using lcd_draw_image
+        lcd_draw_image(x_center - CARD_VL_X_TEXT_DELTA,
+                       CARD_HL_Y_UPPER,
+                       card_id_image.width,
+                       card_id_image.height,
+                       card_id_image.bitmap,
+                       LCD_COLOR_RED,
+                       LCD_COLOR_WHITE,
+                       true);
+        // Draw card value at bottom right using lcd_draw_image
+        lcd_draw_image(x_center + CARD_VL_X_TEXT_DELTA,
+                       CARD_HL_Y_LOWER,
+                       card_id_image.width,
+                       card_id_image.height,
+                       card_id_image.bitmap,
+                       LCD_COLOR_RED,
+                       LCD_COLOR_WHITE,
+                       true);
+    }
+
+    // If the Suit is a club, draw based accordingly on width, height, and bitmap
+    if (card->suit == IMAGE_TYPE_CLUB)
+    {
+        // Draw suit at center
+        lcd_draw_image(x_center,
+                       CARD_HL_Y_CENTER,
+                       IMAGE_PIXELS_WIDTH_CLUB,
+                       IMAGE_PIXELS_HEIGHT_CLUB,
+                       IMAGE_BITMAP_CLUB,
+                       LCD_COLOR_BLACK,
+                       LCD_COLOR_WHITE,
+                       true);
+
+        // Draw card value at top left using lcd_draw_image
+        lcd_draw_image(x_center - CARD_VL_X_TEXT_DELTA,
+                       CARD_HL_Y_UPPER,
+                       card_id_image.width,
+                       card_id_image.height,
+                       card_id_image.bitmap,
+                       LCD_COLOR_BLACK,
+                       LCD_COLOR_WHITE,
+                       true);
+        // Draw card value at bottom right using lcd_draw_image
+        lcd_draw_image(x_center + CARD_VL_X_TEXT_DELTA,
+                       CARD_HL_Y_LOWER,
+                       card_id_image.width,
+                       card_id_image.height,
+                       card_id_image.bitmap,
+                       LCD_COLOR_BLACK,
+                       LCD_COLOR_WHITE,
+                       true);
+    }
+
+    // If the Suit is a spade, draw based accordingly on width, height, and bitmap
+    if (card->suit == IMAGE_TYPE_SPADE)
+    {
+        // Draw suit at center
+        lcd_draw_image(x_center,
+                       CARD_HL_Y_CENTER,
+                       IMAGE_PIXELS_WIDTH_SPADE,
+                       IMAGE_PIXELS_HEIGHT_SPADE,
+                       IMAGE_BITMAP_SPADE,
+                       LCD_COLOR_BLACK,
+                       LCD_COLOR_WHITE,
+                       true);
+        // Draw card value at top left using lcd_draw_image
+        lcd_draw_image(x_center - CARD_VL_X_TEXT_DELTA,
+                       CARD_HL_Y_UPPER,
+                       card_id_image.width,
+                       card_id_image.height,
+                       card_id_image.bitmap,
+                       LCD_COLOR_BLACK,
+                       LCD_COLOR_WHITE,
+                       true);
+        // Draw card value at bottom right using lcd_draw_image
+        lcd_draw_image(x_center + CARD_VL_X_TEXT_DELTA,
+                       CARD_HL_Y_LOWER,
+                       card_id_image.width,
+                       card_id_image.height,
+                       card_id_image.bitmap,
+                       LCD_COLOR_BLACK,
+                       LCD_COLOR_WHITE,
+                       true);
+    }
+
+    // If the Suit is a diamond, draw based accordingly on width, height, and bitmap
+    if (card->suit == IMAGE_TYPE_DIAMOND)
+    {
+        // Draw suit at center
+        lcd_draw_image(x_center,
+                       CARD_HL_Y_CENTER,
+                       IMAGE_PIXELS_WIDTH_DIAMOND,
+                       IMAGE_PIXELS_HEIGHT_DIAMOND,
+                       IMAGE_BITMAP_DIAMOND,
+                       LCD_COLOR_RED,
+                       LCD_COLOR_WHITE,
+                       true);
+        // Draw card value at top left using lcd_draw_image
+        lcd_draw_image(x_center - CARD_VL_X_TEXT_DELTA,
+                       CARD_HL_Y_UPPER,
+                       card_id_image.width,
+                       card_id_image.height,
+                       card_id_image.bitmap,
+                       LCD_COLOR_RED,
+                       LCD_COLOR_WHITE,
+                       true);
+        // Draw card value at bottom right using lcd_draw_image
+        lcd_draw_image(x_center + CARD_VL_X_TEXT_DELTA,
+                       CARD_HL_Y_LOWER,
+                       card_id_image.width,
+                       card_id_image.height,
+                       card_id_image.bitmap,
+                       LCD_COLOR_RED,
+                       LCD_COLOR_WHITE,
+                       true);
+    }
 
     return true;
 }

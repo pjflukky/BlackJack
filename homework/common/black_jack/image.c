@@ -37,7 +37,7 @@
 
    switch (img_type)
    {
-   // HEART CASE
+   // HEART CASE: Set width, height, fcolor, bcolor, and bitmap
    case IMAGE_TYPE_HEART:
       image->width = IMAGE_PIXELS_WIDTH_HEART;
       image->height = IMAGE_PIXELS_HEIGHT_HEART;
@@ -46,7 +46,7 @@
       image->bitmap = IMAGE_BITMAP_HEART;
       break;
    
-   // DIAMOND CASE
+   // DIAMOND CASE: Set width, height, fcolor, bcolor, and bitmap
    case IMAGE_TYPE_DIAMOND:
       image->width = IMAGE_PIXELS_WIDTH_DIAMOND;
       image->height = IMAGE_PIXELS_HEIGHT_DIAMOND;
@@ -55,7 +55,7 @@
       image->bitmap = IMAGE_BITMAP_DIAMOND;
       break;
    
-   // CLUB CASE
+   // CLUB CASE: Set width, height, fcolor, bcolor, and bitmap
    case IMAGE_TYPE_CLUB:
       image->width = IMAGE_PIXELS_WIDTH_CLUB;
       image->height = IMAGE_PIXELS_HEIGHT_CLUB;
@@ -64,7 +64,7 @@
       image->bitmap = IMAGE_BITMAP_CLUB;
       break;
    
-   // SPADE CASE
+   // SPADE CASE: Set width, height, fcolor, bcolor, and bitmap
    case IMAGE_TYPE_SPADE:
       image->width = IMAGE_PIXELS_WIDTH_SPADE;
       image->height = IMAGE_PIXELS_HEIGHT_SPADE;

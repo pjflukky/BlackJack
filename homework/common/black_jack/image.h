@@ -15,10 +15,10 @@
 #include <stdbool.h>
 
 typedef enum {
-    IMAGE_TYPE_HEART = 0,           /* Image used to render cards with a suit that is a heart*/
-    IMAGE_TYPE_DIAMOND = 1,         /* Image used to render cards with a suit that is a diamond*/
-    IMAGE_TYPE_CLUB = 2,            /* Image used to render cards with a suit that is a club*/
-    IMAGE_TYPE_SPADE = 3,           /* Image used to render cards with a suit that is a spade*/
+    IMAGE_TYPE_HEART = 2,           /* Image used to render cards with a suit that is a heart*/
+    IMAGE_TYPE_DIAMOND = 3,         /* Image used to render cards with a suit that is a diamond*/
+    IMAGE_TYPE_CLUB = 0,            /* Image used to render cards with a suit that is a club*/
+    IMAGE_TYPE_SPADE = 1,           /* Image used to render cards with a suit that is a spade*/
     IMAGE_TYPE_START_SCREEN = 4,    /* Image used to display the start screen */
     IMAGE_TYPE_BET_SCREEN = 5,      /* Image used to display the bet screen */
     IMAGE_TYPE_FONT = 6,            /* Image is an ASCII character */

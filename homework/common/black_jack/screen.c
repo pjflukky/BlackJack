@@ -109,7 +109,7 @@ void screen_display_stats_funds(int16_t funds, uint16_t fcolor)
         free(colon);
 
         /// the following code will be stat funds ///
-        char str[100] = {0};
+        char str[6] = {0};
         itoa(funds, str, 10); // change integer to string array
       
         for(int i = 0; str[i] != NULL; i++){
@@ -202,7 +202,7 @@ void screen_display_stats_bet(int16_t bet, uint16_t fcolor)
         free(colon);
 
         /// the following code will be bet amount ///
-        char str[100] = {0};
+        char str[6] = {0};
         itoa(bet, str, 10); // change integer to string array
       
         for(int i = 0; str[i] != NULL; i++){
@@ -234,7 +234,7 @@ void screen_display_stats_bet(int16_t bet, uint16_t fcolor)
 void screen_display_stats_dealer_hand(int16_t hand_value, uint16_t fcolor) 
 {
      /// the following code will be the dealer hand  ///
-     char str[100] = {0};
+     char str[6] = {0};
      itoa(hand_value, str, 10); // change integer to string array
    
      for(int i = 0; str[i] != NULL; i++){
@@ -266,7 +266,7 @@ void screen_display_stats_dealer_hand(int16_t hand_value, uint16_t fcolor)
 void screen_display_stats_player_hand(int16_t hand_value, uint16_t fcolor) 
 {
     /// the following code will be the player hand  ///
-    char str[100] = {0};
+    char str[6] = {0};
     itoa(hand_value, str, 10); // change integer to string array
   
     for(int i = 0; str[i] != NULL; i++){

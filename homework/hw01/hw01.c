@@ -1,6 +1,6 @@
 /**
  * @file hw01.c
- * @author Pakorn Jantacumma
+ * @author Pakorn Jantacumma & Ajinka
  * @brief 
  * @version 0.1
  * @date 2025-01-21
@@ -22,7 +22,7 @@
 /* Global Variables                                                          */
 /*****************************************************************************/
 char APP_DESCRIPTION[] = "ECE353: S25 HW01";
-char STUDENTS[] = "Pakorn Jantacumma";     /* Modify */
+char STUDENTS[] = "Pakorn Jantacumma , Ajinka";     /* Modify */
 char TEAM[] = "Team14";                 /* Modify */
 
  cyhal_trng_t trng_obj;
@@ -66,12 +66,24 @@ void main_app(void)
     printf("* Names:%s\n\r", STUDENTS);
     printf("**************************************************\n\r");
 
+    u_int32_t fund = 0;
+    uint32_t reg_val;
+
     while (1)
     {
-        screen_display_stats_funds(200, 0x0400);
-        screen_display_stats_bet(20, 0x0400);
-        screen_display_stats_dealer_hand(21, 0x7800);
-        screen_display_stats_player_hand(4, 0x0400);
+
+        // button value
+        reg_val = REG_PUSH_BUTTON_IN;
+
+        if((reg_val &  SW1_MASK) == 0x00)
+            fund += 50;
+
+        screen_display_stats_funds(fund, 0x0400);
+        screen_display_stats_bet(50, 0x0400);
+        screen_display_stats_player_hand(21, 0x0400);
+        screen_display_stats_dealer_hand(9, 0x7800);
+
+        cyhal_system_delay_ms(250);
     }
 }
 

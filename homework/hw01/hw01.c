@@ -123,11 +123,11 @@ void main_app(void)
         if (card.card_id == CARD_ID_A)
         {
             card.card_id = '1';
-            card.suit++;
             if (card.suit == IMAGE_TYPE_DIAMOND)
             {
-                card.suit = IMAGE_TYPE_CLUB;
+                card.suit = -1; // change back to -1 because we add 1 after the end of this into club
             }
+            card.suit++;
         }
 
         //Display the Stats

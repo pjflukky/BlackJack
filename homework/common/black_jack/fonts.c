@@ -3904,7 +3904,7 @@ bool font_get_image(char c, image_t *image)
 {
 
 	uint8_t index = c - '!';
-	if (index <='!'|| index >= '~'){
+	if (index > ('~' - '!')){
 		return false;
 	}
 	uint16_t bitmap_offset = bebasNeue_28ptDescriptors[index].offset;
@@ -3913,7 +3913,7 @@ bool font_get_image(char c, image_t *image)
 	image->width = bebasNeue_28ptDescriptors[index].width;
 	image->image_type = IMAGE_TYPE_FONT;
 	image->height = bebasNeue_28ptDescriptors[index].height;
-	image->fcolor = 0x008000;
-	image->bcolor = 0x000000;
+	image->fcolor = 0x0400;
+	image->bcolor = 0x0000;
 	return true;
 }

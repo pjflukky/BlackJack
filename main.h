@@ -85,7 +85,7 @@
 //#define ICE02        /* In-Class Exercise -- Memory Mapped IO */
 //#define ICE03        /* In-Class Exercise -- PSoC6 IO Ports */
 //#define ICE04        /* In-Class Exercise -- GPIO LCD */
-#define ICE05        /* In-Class Exercise -- SysTick */
+//#define ICE05        /* In-Class Exercise -- SysTick */
 //#define ICE06        /* In-Class Exercise -- PWM */
 //#define ICE07        /* In-Class Exercise -- Timer Interrupts */
 //#define ICE08        /* In-Class Exercise -- ADC */
@@ -100,7 +100,7 @@
 //#define ICE17        /* In-Class Exercise -- FreeRTOS Queues */
 //#define ICE18        /* In-Class Exercise -- FreeRTOS Task Notifications */
 
-//#define HW01
+#define HW01
 //#define HW02
 //#define HW03
 //#define HW04

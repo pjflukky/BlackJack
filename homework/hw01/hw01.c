@@ -1,6 +1,6 @@
 /**
  * @file hw01.c
- * @author <ADD YOUR NAMES>
+ * @author Pakorn Jantacumma
  * @brief 
  * @version 0.1
  * @date 2025-01-21
@@ -22,8 +22,8 @@
 /* Global Variables                                                          */
 /*****************************************************************************/
 char APP_DESCRIPTION[] = "ECE353: S25 HW01";
-char STUDENTS[] = "ADD YOUR NAMES";     /* Modify */
-char TEAM[] = "TeamXX";                 /* Modify */
+char STUDENTS[] = "Pakorn Jantacumma";     /* Modify */
+char TEAM[] = "Team14";                 /* Modify */
 
  cyhal_trng_t trng_obj;
 
@@ -68,7 +68,10 @@ void main_app(void)
 
     while (1)
     {
-        /* Modify */
+        screen_display_stats_funds(200, 0x0400);
+        screen_display_stats_bet(20, 0x0400);
+        screen_display_stats_dealer_hand(21, 0x7800);
+        screen_display_stats_player_hand(4, 0x0400);
     }
 }
 

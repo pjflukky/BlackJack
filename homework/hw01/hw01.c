@@ -1,14 +1,14 @@
 /**
  * @file hw01.c
  * @author Pakorn Jantacumma & Ajinka
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2025-01-21
- * 
+ *
  * @copyright Copyright (c) 2025
- * 
+ *
  */
- #include "hw01.h"
+#include "hw01.h"
 #include "card.h"
 #include "console.h"
 #include "cyhal_system.h"
@@ -22,11 +22,10 @@
 /* Global Variables                                                          */
 /*****************************************************************************/
 char APP_DESCRIPTION[] = "ECE353: S25 HW01";
-char STUDENTS[] = "Pakorn Jantacumma , Ajinka";     /* Modify */
-char TEAM[] = "Team14";                 /* Modify */
+char STUDENTS[] = "Pakorn Jantacumma , Ajinkya Dhamdhere"; /* Modify */
+char TEAM[] = "Team14";                                    /* Modify */
 
- cyhal_trng_t trng_obj;
-
+cyhal_trng_t trng_obj;
 
 /**
  * @brief
@@ -69,15 +68,69 @@ void main_app(void)
     u_int32_t fund = 0;
     uint32_t reg_val;
 
+    // Start with the 2 of Clubs
+    card_t card = {
+        .border_color = LCD_COLOR_BLUE,
+        .suit = IMAGE_TYPE_CLUB,
+        .card_id = CARD_ID_2,
+        .hand_index = 0};
+    // Draw the initial card
+    card_draw(&card);
+
     while (1)
     {
 
         // button value
         reg_val = REG_PUSH_BUTTON_IN;
-
-        if((reg_val &  SW1_MASK) == 0x00)
+        // If Button 1 is pressed
+        if ((reg_val & SW1_MASK) == 0x00)
+        {
+            // Add to the fund value
             fund += 50;
+            // Increment the x position
+            card.hand_index++;
+            // Increment the card number
+            card.card_id++;
 
+            // Change the ASCII to T for ten
+            if (card.card_id == 58)
+                card.card_id = 84;
+
+            // Change the ASCII to J for jack
+            if (card.card_id == 85)
+                card.card_id = 74;
+            // Change the ASCII to Q for queen
+            if (card.card_id == 75)
+                card.card_id = 81;
+            // Change the ASCII to K for king
+            if (card.card_id == 82)
+                card.card_id = 75;
+            // Change the ASCII to A for ace
+            if (card.card_id == 76)
+                card.card_id = 65;
+
+            //Reset the hand index if the screen is filled
+            if (card.hand_index >= 7)
+            {
+                lcd_clear_screen(LCD_COLOR_BLACK);
+                card.hand_index = 0;
+            }
+            //Draw the card
+            card_draw(&card);
+        }
+
+        //If the card is an Ace next card needs to be reset
+        if (card.card_id == CARD_ID_A)
+        {
+            card.card_id = '1';
+            card.suit++;
+            if (card.suit == IMAGE_TYPE_DIAMOND)
+            {
+                card.suit = IMAGE_TYPE_CLUB;
+            }
+        }
+
+        //Display the Stats
         screen_display_stats_funds(fund, 0x0400);
         screen_display_stats_bet(50, 0x0400);
         screen_display_stats_player_hand(21, 0x0400);

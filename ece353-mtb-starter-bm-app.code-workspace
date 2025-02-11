@@ -33,7 +33,8 @@
         "files.associations": {
             "io-sw.h": "c",
             "cybsp.h": "c",
-            "complex.h": "c"
+            "complex.h": "c",
+            "fonts.h": "c"
         }
     },
     "extensions": {

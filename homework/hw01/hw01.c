@@ -22,7 +22,7 @@
 /* Global Variables                                                          */
 /*****************************************************************************/
 char APP_DESCRIPTION[] = "ECE353: S25 HW01";
-char STUDENTS[] = "Pakorn Jantacumma , Ajinka";     /* Modify */
+char STUDENTS[] = "Pakorn Jantacumma , Ajinkya Dhamdhere";     /* Modify */
 char TEAM[] = "Team14";                 /* Modify */
 
  cyhal_trng_t trng_obj;
@@ -69,9 +69,19 @@ void main_app(void)
     u_int32_t fund = 0;
     uint32_t reg_val;
 
+    card_t spades_two = {
+        .border_color = LCD_COLOR_BLUE,
+        .suit = IMAGE_TYPE_SPADE,
+        .card_id = CARD_ID_2,
+        .hand_index = 0
+    };
+
+
+    card_draw(&spades_two);
+
     while (1)
     {
-
+        
         // button value
         reg_val = REG_PUSH_BUTTON_IN;
 

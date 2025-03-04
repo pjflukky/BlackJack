@@ -96,42 +96,56 @@ void main_app(void)
         // If Button 1 is pressed
         if ((reg_val & SW1_MASK) == 0x00)
         {
+            //Set the index back to 0
             card_ind = 0;
+            //Call our randomizer function
             deck_randomize(&DeckB);
+            //Set the respective hand indexes of DeckA and DeckB
             DeckA.cards[card_ind].hand_index = 0;
             DeckB.cards[card_ind].hand_index = 6;
 
+            //Draw the cards
             card_draw(&DeckA.cards[card_ind]);
             card_draw(&DeckB.cards[card_ind]);
 
-            screen_display_stats_player_hand(0, LCD_COLOR_BLACK);
-            screen_display_stats_player_hand(0, LCD_COLOR_WHITE);
+            //Clear the "score"
+            screen_display_stats_player_hand(88, LCD_COLOR_BLACK);
+            
         }
+
 
         joystick_position_t joystick_position = joystick_get_pos();
 
+        //If we move up, then increment the card index and check if we are within the bounds
         if (joystick_position == JOYSTICK_POS_UP){
             card_ind++;
             if (card_ind > 51){
                 card_ind = 0;
+                //Clear the screen
+                screen_display_stats_player_hand(88, LCD_COLOR_BLACK);
             }
         }
+        //If down then decrement the card index and check if it is below th allowed bounds
         else if (joystick_position == JOYSTICK_POS_DOWN){
             card_ind--;
             if (card_ind < 0){
                 card_ind = 51;
+                //Clear the score
+                screen_display_stats_player_hand(88, LCD_COLOR_BLACK);
             }
         }
-
+        //If either we have moved up OR down we want to draw the cards and keep the hand index's correct
         if (joystick_position == JOYSTICK_POS_UP || joystick_position == JOYSTICK_POS_DOWN){
             DeckA.cards[card_ind].hand_index = 0;
             DeckB.cards[card_ind].hand_index = 6;
 
             card_draw(&DeckA.cards[card_ind]);
             card_draw(&DeckB.cards[card_ind]);
-
+        //Small delay so you can't just infinitely scroll
         cyhal_system_delay_ms(250);
         }
+
+        //Display the score
         screen_display_stats_player_hand(card_ind, LCD_COLOR_WHITE);
     }
 }

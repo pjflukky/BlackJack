@@ -78,7 +78,7 @@ void joystick_init(void)
 uint16_t  joystick_read_x(void)
 {
     /* ADD CODE */
-    return 0;
+    return cyhal_adc_read_u16(&joystick_adc_chan_x_obj);
     }
 
 /** Read Y direction of Joystick 
@@ -88,7 +88,7 @@ uint16_t  joystick_read_x(void)
 uint16_t  joystick_read_y(void)
 {
     /* ADD CODE */
-    return 0;
+    return cyhal_adc_read_u16(&joystick_adc_chan_y_obj);
 }
 
 
@@ -100,7 +100,38 @@ uint16_t  joystick_read_y(void)
  */
 joystick_position_t joystick_get_pos(void)
 {
-    return JOYSTICK_POS_CENTER;
+    if (joystick_read_y() > JOYSTICK_THRESH_Y_UP_2P475V){
+        return JOYSTICK_POS_UP;
+    }
+    else if (joystick_read_y() < JOYSTICK_THRESH_Y_DOWN_0P825V){
+        return JOYSTICK_POS_DOWN;
+    }
+    else if (joystick_read_x() > JOYSTICK_THRESH_X_LEFT_2P475V){
+        return JOYSTICK_POS_LEFT;
+    }
+    else if (joystick_read_x() < JOYSTICK_THRESH_X_RIGHT_0P825V){
+        return JOYSTICK_POS_RIGHT;
+    }
+    else if (joystick_read_y() > JOYSTICK_THRESH_Y_UP_2P475V
+    && joystick_read_x() > JOYSTICK_THRESH_X_LEFT_2P475V){
+        return JOYSTICK_POS_UPPER_LEFT;
+    }
+    else if (joystick_read_y() > JOYSTICK_THRESH_Y_UP_2P475V
+    && joystick_read_x() < JOYSTICK_THRESH_X_RIGHT_0P825V){
+        return JOYSTICK_POS_UPPER_RIGHT;
+    }
+    else if (joystick_read_y() < JOYSTICK_THRESH_Y_DOWN_0P825V
+    && joystick_read_x() > JOYSTICK_THRESH_X_LEFT_2P475V){
+        return JOYSTICK_POS_LOWER_LEFT;
+    }
+    else if (joystick_read_y() < JOYSTICK_THRESH_Y_DOWN_0P825V
+    && joystick_read_x() < JOYSTICK_THRESH_X_RIGHT_0P825V){
+        return JOYSTICK_POS_LOWER_RIGHT;
+    }
+    else{
+        return JOYSTICK_POS_CENTER;
+    }
+
 }
 
 /* ADD CODE */
@@ -112,5 +143,32 @@ joystick_position_t joystick_get_pos(void)
  */
 void joystick_print_pos(joystick_position_t position)
 {
+    if (position == JOYSTICK_POS_UP){
+        printf("Up");
+    }
+    else if (position == JOYSTICK_POS_DOWN){
+        printf("Down");
+    }
+    else if (position == JOYSTICK_POS_LEFT){
+        printf("Left");
+    }
+    else if (position == JOYSTICK_POS_RIGHT){
+        printf("Right");
+    }
+    else if (position == JOYSTICK_POS_UPPER_LEFT){
+        printf("Upper Left");
+    }
+    else if (position == JOYSTICK_POS_UPPER_RIGHT){
+        printf("Upper Right");
+    }
+    else if (position == JOYSTICK_POS_LOWER_LEFT){
+        printf("Lower Left");
+    }
+    else if (position == JOYSTICK_POS_LOWER_RIGHT){
+        printf("Lower Right");
+    }
+    else{
+        printf("Center");
+    }
 
 }

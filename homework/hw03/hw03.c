@@ -37,7 +37,8 @@ cyhal_trng_t trng_obj;
  * This function is implemented in the iceXX.c file for the ICE you are
  * working on.
  */
-void peripheral_init(void) {
+void peripheral_init(void)
+{
   /* Enable the push buttons*/
   push_buttons_init(false);
 
@@ -48,16 +49,16 @@ void peripheral_init(void) {
   ece353_enable_lcd();
 
   i2c_init();
-  
+
   // Set bit 7 as input, bits 6-0 as outputs
-  io_expander_set_configuration( 0x80);  
-  
+  io_expander_set_configuration(0x80);
+
   // Turn OFF all LEDs
-  io_expander_set_output_port(0x00); 
- 
+  io_expander_set_output_port(0x00);
+
   // Turn on io expander interrupts
-  io_expander_enable_int();          
-  
+  io_expander_enable_int();
+
   spi_init();
   eeprom_cs_init();
 
@@ -71,7 +72,8 @@ void peripheral_init(void) {
 /**
  * @brief
  */
-void main_app(void) {
+void main_app(void)
+{
 
   printf("\x1b[2J\x1b[;H");
   printf("**************************************************\n\r");
@@ -83,7 +85,34 @@ void main_app(void) {
 
   ltr_light_sensor_start();
 
-  while (1) {
+  uint32_t bet = 0;
+  uint32_t funds = 0;
+
+  while (1)
+  {
+
+    // If the joystick moves up increment bet by 50
+    if (ECE353_Events.joystick == 1 && Joystick_Pos == JOYSTICK_POS_UP)
+    {
+      //If the bet is greater than or equal to the funds increment
+      //Note: bet should never be greater than funds but for completeness
+      if (bet >= funds) {
+        funds += 50;
+      }
+      bet += 50;
+    }
+    // If down then decrement bet and make sure it is within the allowed bounds
+    else if (ECE353_Events.joystick == 1 && Joystick_Pos == JOYSTICK_POS_DOWN)
+    {
+      if (bet <= 50)
+      {
+        bet == 0;
+      }
+      else
+      {
+        bet -= 50;
+      }
+    }
   }
 }
 

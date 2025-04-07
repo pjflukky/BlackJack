@@ -17,8 +17,8 @@
  *  Data is written to addresses 0x10 and 0x11
  * @param score
  */
-void score_write(uint16_t score)
-{
+void score_write(uint16_t score){
+    
 }
 
 /**
@@ -27,6 +27,6 @@ void score_write(uint16_t score)
  * @return uint16_t
  * The value of the high water mark for the funds
  */
-uint16_t score_read(void)
-{
+uint16_t score_read(void){
+
 }

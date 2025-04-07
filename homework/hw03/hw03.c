@@ -87,6 +87,7 @@ void main_app(void)
 
   uint32_t bet = 0;
   uint32_t funds = 0;
+  uint32_t reg_val = 0;
 
   while (1)
   {
@@ -94,9 +95,10 @@ void main_app(void)
     // If the joystick moves up increment bet by 50
     if (ECE353_Events.joystick == 1 && Joystick_Pos == JOYSTICK_POS_UP)
     {
-      //If the bet is greater than or equal to the funds increment
-      //Note: bet should never be greater than funds but for completeness
-      if (bet >= funds) {
+      // If the bet is greater than or equal to the funds increment
+      // Note: bet should never be greater than funds but for completeness
+      if (bet >= funds)
+      {
         funds += 50;
       }
       bet += 50;
@@ -112,6 +114,13 @@ void main_app(void)
       {
         bet -= 50;
       }
+    }
+
+    reg_val = REG_PUSH_BUTTON_IN;
+    // If Button 2 is pressed
+    if ((reg_val & SW2_MASK) == 0x00)
+    {
+      // TODO ADD CASE LOGIC FOR WHICH LED WILL TURN ON
     }
   }
 }

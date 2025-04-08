@@ -82,11 +82,15 @@ void main_app(void) {
   printf("**************************************************\n\r");
 
   ltr_light_sensor_start();
+  uint32_t bet = 0;
+  uint32_t funds = 0;
+  uint32_t reg_val = 0;
+  // FONT color
+  uint16_t font = 0xFFFF;
+  
+
 
   while (1) {
-    // FONT color
-    uint16_t font = 0x0000;
-
     // lux handle
   if (ECE353_Events.lux_less_100)
   {
@@ -104,6 +108,39 @@ void main_app(void) {
     ECE353_Events.lux_between = 0;
   }
 
+  // If the joystick moves up increment bet by 50
+    if (ECE353_Events.joystick == 1 && Joystick_Pos == JOYSTICK_POS_UP)
+    {
+      // If the bet is greater than or equal to the funds increment
+      // Note: bet should never be greater than funds but for completeness
+      if (bet >= funds)
+      {
+        funds += 50;
+      }
+      bet += 50;
+    }
+    // If down then decrement bet and make sure it is within the allowed bounds
+    else if (ECE353_Events.joystick == 1 && Joystick_Pos == JOYSTICK_POS_DOWN)
+    {
+      if (bet <= 50)
+      {
+        bet == 0;
+      }
+      else
+      {
+        bet -= 50;
+      }
+    }
+
+    reg_val = REG_PUSH_BUTTON_IN;
+    // If Button 2 is pressed
+    if ((reg_val & SW2_MASK) == 0x00)
+    {
+      // TODO ADD CASE LOGIC FOR WHICH LED WILL TURN ON
+    }
+
+  screen_display_stats_funds(funds, font);
+  screen_display_stats_bet(bet, font);
   }
 }
 

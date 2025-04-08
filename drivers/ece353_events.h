@@ -18,8 +18,12 @@
     unsigned int sw3 : 1;       /* Falling edge of SW3 detected */
     unsigned int joystick : 1;  /* Joystick has moved position */
     unsigned int ipc_rx : 1;    /* Data received from remote board */
+    unsigned int lux_less_100 : 1;    /* lux less than 100 */
+    unsigned int lux_more_500 : 1; /* lux more than 500*/
+    unsigned int lux_between : 1; /* lux between 100, 500*/
 } ece353_events_t;
 
 extern volatile ece353_events_t ECE353_Events;
+extern volatile ece353_events_t ECE353_Events_250;
 
  #endif

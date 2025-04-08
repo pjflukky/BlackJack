@@ -34,7 +34,10 @@
             "io-sw.h": "c",
             "cybsp.h": "c",
             "complex.h": "c",
-            "fonts.h": "c"
+            "fonts.h": "c",
+            "ece353_events.h": "c",
+            "timer_050_ms.h": "c",
+            "eeprom.h": "c"
         }
     },
     "extensions": {

@@ -13,11 +13,19 @@
 
  #if defined (HW03) 
 
+ /* 250mS Timer Handles*/
+cyhal_timer_t       Timer_MS_250_Obj; 
+cyhal_timer_cfg_t   Timer_MS_250_Cfg;
+
  /**
   * @brief 
   * Handler for the 250mS Timer Interrupt
   */
+ void handler_timer_250_ms(void *callback_arg, cyhal_timer_event_t event)
+ {
+    uint16_t ch0 = ltr_light_sensor_get_ch0(); // get read value from channel 0
 
+ }
 
  /**
   * @brief 
@@ -25,6 +33,9 @@
   */
 void timer_250_ms_start(void)
 {
+  // generate interupt every 250 ms
+  timer_init(&Timer_MS_250_Obj, &Timer_MS_250_Cfg, 25000000, handler_timer_250_ms);
+  cyhal_timer_start(&Timer_MS_250_Obj);
 }
 
 #endif

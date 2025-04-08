@@ -82,11 +82,14 @@ void main_app(void) {
   printf("**************************************************\n\r");
 
   ltr_light_sensor_start();
-  uint32_t bet = 0;
-  uint32_t funds = 0;
+  uint16_t bet = 0;
+  uint16_t funds = score_read();
   uint32_t reg_val = 0;
+  uint16_t led_case = 0;
   // FONT color
   uint16_t font = 0xFFFF;
+
+  printf("%u\n", funds);
   
 
 
@@ -115,27 +118,53 @@ void main_app(void) {
       // Note: bet should never be greater than funds but for completeness
       if (bet >= funds)
       {
-        funds += 50;
+        funds += 25;
+        score_write(funds);
       }
-      bet += 50;
+      bet += 25;
+            lcd_clear_screen(0x0000);
+
     }
     // If down then decrement bet and make sure it is within the allowed bounds
     else if (ECE353_Events.joystick == 1 && Joystick_Pos == JOYSTICK_POS_DOWN)
     {
-      if (bet <= 50)
+      if (bet >= 25)
       {
-        bet == 0;
+        bet -= 25;
+      lcd_clear_screen(0x0000);
       }
-      else
-      {
-        bet -= 50;
-      }
+      
+      
     }
 
     reg_val = REG_PUSH_BUTTON_IN;
     // If Button 2 is pressed
     if ((reg_val & SW2_MASK) == 0x00)
     {
+      led_case++;
+
+      if (led_case > 7) {
+        led_case = 0;
+      }
+
+      switch(led_case){
+        case 0:
+          //No Lights On
+        case 1:
+          //D605 Light On
+        case 2:
+          //D606 Light On
+        case 3:
+          //D600 Light On
+        case 4:
+          //D601 Light On
+        case 5:
+          //D602 Light On
+        case 6:
+          //D603 Light On
+        case 7:
+          //D604 Light On
+      }
       // TODO ADD CASE LOGIC FOR WHICH LED WILL TURN ON
     }
 

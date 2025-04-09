@@ -99,3 +99,19 @@ void io_expander_set_configuration(uint8_t value)
 {
 	io_expander_write_reg(TCA9534_CONFIG_ADDR, value);
 }
+
+void io_expander_enable_interrupt(void){
+	cyhal_gpio_init(P11_2, CYHAL_GPIO_IRQ_RISE, CYHAL_ISR_PRIORITY_DEFAULT, true);
+
+	static cyhal_gpio_callback_data_t callback_data = {
+		.callback = io_expander_interrupt_handler,
+		.callback_arg = NULL
+	};
+
+	cyhal_gpio_register_callback(P11_2, &callback_data);
+	cyhal_gpio_enable_event(P11_2, CYHAL_GPIO_IRQ_RISE, CYHAL_ISR_PRIORITY_DEFAULT, true);
+}
+
+void io_expander_interrupt_handler(void *callback, cyhal_gpio_event_t event){
+
+}

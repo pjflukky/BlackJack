@@ -19,6 +19,7 @@
     unsigned int joystick : 1;  /* Joystick has moved position */
     unsigned int ipc_rx : 1;    /* Data received from remote board */
     unsigned int lux_read : 1; /* read the lux from channel 0*/
+    unsigned int io_interrupt : 1;
 } ece353_events_t;
 
 extern volatile ece353_events_t ECE353_Events;

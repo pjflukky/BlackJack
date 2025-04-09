@@ -11,7 +11,7 @@
 #include "main.h"
 
 volatile ece353_events_t ECE353_Events;
-char NAME[] = "Jantacumma, Pakorn";
+char NAME[] = "Pakorn Ajinkya";
 
 int main(void)
 {

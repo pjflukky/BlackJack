@@ -13,6 +13,7 @@
 #include "cy_pdl.h"
 #include "cyhal.h"
 #include "cybsp.h"
+#include "ece353_events.h"
 
 #include "i2c.h"
 
@@ -55,7 +56,7 @@ void io_expander_set_configuration(uint8_t value);
 
 void io_expander_enable_interrupt(void);
 
-void io_expander_interrupt_handler(void);
+void io_expander_interrupt_handler(void *callback, cyhal_gpio_event_t event);
  
 
 #endif /* IO_EXPANDER_H_ */

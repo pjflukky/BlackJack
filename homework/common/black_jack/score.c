@@ -19,34 +19,16 @@
  */
 void score_write(uint16_t score)
 {
-    uint8_t transmit_data[1] = {EEPROM_CMD_WRITE};
-	uint8_t receive_data[1] = {0};
-	cy_rslt_t rslt = CY_RSLT_SUCCESS;
+    //Low value is 0x10 (Given)
+    uint16_t low = 0x10;
+	//High value is 0x11 (Given)
+	uint16_t high = 0x11;
+	uint8_t low_bytes = score & 0x00FF;
+	uint8_t high_bytes = (uint8_t)(score >> 8);
 
-    // Wait for any outstanding writes to complete
-	eeprom_wait_for_write();
-
-	// Enable writes to the eeprom
-	eeprom_write_enable();
-
-	// Set the CS Low
-	cyhal_gpio_write(PIN_SPI_EEPROM_CS, 0);
-	// Starts a data transfer
-	rslt = cyhal_spi_transfer(
-		&mSPI,
-		transmit_data,
-		1,
-		receive_data,
-		1,
-		0x00);
-	CY_ASSERT(rslt == CY_RSLT_SUCCESS); /* Halt MCU if SPI transaction fails*/
-
-	// Set the CS High
-	cyhal_gpio_write(PIN_SPI_EEPROM_CS, 1);
-
-	// Disable writes to the eeprom
-	eeprom_write_disable();
-
+	//Write the low and high bytes
+	eeprom_write_byte(low, low_bytes);
+	eeprom_write_byte(high, high_bytes);
 
 }
 
@@ -58,36 +40,18 @@ void score_write(uint16_t score)
  */
 uint16_t score_read(void)
 {
-    uint8_t transmit_data[1] = {0};
-	uint8_t receive_data[1] = {EEPROM_CMD_READ};
-	cy_rslt_t rslt = CY_RSLT_SUCCESS;
 
-	// Wait for any outstanding writes to complete
-	eeprom_wait_for_write();
+	//Low value is 0x10 (Given)
+    uint16_t low = 0x10;
+	//High value is 0x11 (Given)
+	uint16_t high = 0x11;
+	uint8_t low_bytes = eeprom_read_byte(low);
+	uint8_t high_bytes = eeprom_read_byte(high);
 
-	// Enable writes to the eeprom
-	eeprom_write_enable();
+	//Get the return result and return it by bit shifting the high bytes and oring it with the low
+	uint16_t return_rslt = (high_bytes << 8) | low_bytes;
 
-	// Set the CS Low
-	cyhal_gpio_write(PIN_SPI_EEPROM_CS, 0);
-
-	// Starts a data transfer
-	rslt = cyhal_spi_transfer(
-		&mSPI,
-		transmit_data,
-		1,
-		receive_data,
-		1,
-		0x00);
-	CY_ASSERT(rslt == CY_RSLT_SUCCESS); /* Halt MCU if SPI transaction fails*/
-
-	// Set the CS High
-	cyhal_gpio_write(PIN_SPI_EEPROM_CS, 1);
-
-	// Disable writes to the eeprom
-	eeprom_write_disable();
-
-	// Return the value from the EEPROM to the user
-	return rslt;
+	return return_rslt;
+	
 
 }

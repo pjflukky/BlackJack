@@ -220,7 +220,7 @@ void screen_display_stats_bet(int16_t bet, uint16_t fcolor)
 
             // draw the character
             lcd_draw_image(
-                LOC_GAME_STATS_BET_X + (i*15),
+                LOC_GAME_STATS_BET_X + (i*20),
                 LOC_GAME_STATS_BET_Y - 10,
                 C.width,
                 C.height,

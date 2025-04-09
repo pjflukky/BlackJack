@@ -25,7 +25,7 @@ static void io_expander_write_reg(uint8_t reg, uint8_t value)
 	uint8_t write_data[2] = {reg, value};
 	/* ADD CODE */
 	/* Use cyhal_i2c_master_write to write the required data to the device. */
-	rslt = cyhal_i2c_master_write(&i2c_monarch_obj, TCA9534_SUBORDINATE_ADDR, write_data, 1, 0, true);
+	rslt = cyhal_i2c_master_write(&i2c_monarch_obj, TCA9534_SUBORDINATE_ADDR, write_data, 2, 0, true);
 	CY_ASSERT(rslt == CY_RSLT_SUCCESS);
 }
 
@@ -41,13 +41,13 @@ static uint8_t io_expander_read_reg(uint8_t reg)
 
 	/* ADD CODE */
 	/* Allocate the write data packet that will be sent to the IO Expander */
-	uint8_t write_data_packer[1] = {reg};
+	uint8_t write_data_packet[1] = {reg};
 	/* ADD CODE */
 	/* Allocate the read data packet that will be sent from the IO Expander */
 	uint8_t read_data_packet[1];
 	/* ADD CODE */
 	/* Use cyhal_i2c_master_write to write the required data to the device. */
-	rslt = cyhal_i2c_master_write(&i2c_monarch_obj, TCA9534_SUBORDINATE_ADDR, write_data_packer, 1, 0, true);
+	rslt = cyhal_i2c_master_write(&i2c_monarch_obj, TCA9534_SUBORDINATE_ADDR, write_data_packet, 1, 0, true);
 	CY_ASSERT(rslt == CY_RSLT_SUCCESS);
 
 	/* ADD CODE */
@@ -55,7 +55,7 @@ static uint8_t io_expander_read_reg(uint8_t reg)
 	rslt = cyhal_i2c_master_read(&i2c_monarch_obj, TCA9534_SUBORDINATE_ADDR, read_data_packet, 1, 0, true);
 	CY_ASSERT(rslt == CY_RSLT_SUCCESS);
 
-	return_val = read_data_packet;
+	return_val = read_data_packet[0];
 	return return_val;
 }
 
@@ -100,18 +100,28 @@ void io_expander_set_configuration(uint8_t value)
 	io_expander_write_reg(TCA9534_CONFIG_ADDR, value);
 }
 
-void io_expander_enable_interrupt(void){
-	cyhal_gpio_init(P11_2, CYHAL_GPIO_IRQ_RISE, CYHAL_ISR_PRIORITY_DEFAULT, true);
-
-	static cyhal_gpio_callback_data_t callback_data = {
-		.callback = io_expander_interrupt_handler,
-		.callback_arg = NULL
-	};
-
-	cyhal_gpio_register_callback(P11_2, &callback_data);
+void io_expander_enable_interrupt(void) {
+    cyhal_gpio_init(P11_2, CYHAL_GPIO_IRQ_RISE, CYHAL_ISR_PRIORITY_DEFAULT, true);
+	//Define a structure to handle the callback information
+    cyhal_gpio_callback_data_t* cb_data_ptr = &(cyhal_gpio_callback_data_t){
+        .callback = io_expander_interrupt_handler,
+        .callback_arg = NULL
+    };
+	//register the callback
+    cyhal_gpio_register_callback(P11_2, cb_data_ptr);
+    //Enable the event by calling the other function we wrote
 	cyhal_gpio_enable_event(P11_2, CYHAL_GPIO_IRQ_RISE, CYHAL_ISR_PRIORITY_DEFAULT, true);
 }
 
-void io_expander_interrupt_handler(void *callback, cyhal_gpio_event_t event){
 
+void io_expander_interrupt_handler(void *callback_arg, cyhal_gpio_event_t event) {
+    (void)callback_arg;
+    (void)event;
+	//Set the intterupt flag to 1
+    ECE353_Events.io_interrupt = 1;
 }
+
+
+
+
+

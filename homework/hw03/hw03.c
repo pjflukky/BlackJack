@@ -85,28 +85,31 @@ void main_app(void) {
   uint16_t funds = score_read();
   uint32_t reg_val = 0;
   uint16_t led_case = 0;
-  uint16_t ch0 = 0;
-  uint16_t ch1 = 0;
+
   
   // FONT color
-  uint16_t font = 0xFFFF;
+  uint16_t font = LCD_COLOR_GREEN;
 
 
   while (1) {
     // lux handle
     if(ECE353_Events.lux_read == 1){
-      ch0 = ltr_light_sensor_get_ch0;
+      uint16_t ch0 = ltr_light_sensor_get_ch0();
+
+      if(ch0 < 100){
+        font = LCD_COLOR_BLUE;
+      }
+      else if (ch0 > 500){
+        font = LCD_COLOR_RED;
+      }
+      else{
+        font = LCD_COLOR_GREEN;
+      }
+
+      ECE353_Events.lux_read = 0;
     }
 
-    if(ch0 < 100){
-      font = LCD_COLOR_BLUE;
-    }
-    else if (ch0 > 500){
-      font = LCD_COLOR_RED;
-    }
-    else{
-      font = LCD_COLOR_GREEN;
-    }
+  
     
     screen_display_stats_funds(funds, font);
     screen_display_stats_bet(bet, font);

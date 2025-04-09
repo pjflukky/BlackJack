@@ -84,9 +84,6 @@ cyhal_timer_cfg_t   Timer_MS_050_Cfg;
     // update previous position
     prev_position = Joystick_Pos;
 
-
-
-
  }
 
 /* Configure a general purpose timer to generate an interrupt every 50mS*/

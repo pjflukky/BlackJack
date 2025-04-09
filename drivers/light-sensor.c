@@ -10,6 +10,7 @@
  */
 
 #include "light-sensor.h"
+#include "i2c.h"
 
 uint8_t ltr_reg_read(uint8_t reg);
 
@@ -73,11 +74,11 @@ uint8_t ltr_reg_read(uint8_t reg)
 
     /* ADD CODE */
      // First, write the register address to the sensor
-     rslt = cyhal_i2c_master_write(&i2c_monarch_obj, LTR_SUBORDINATE_ADDR, write_data, 1, 0, true);
+     rslt = cyhal_i2c_master_write(&i2c_monarch_obj, LTR_SUBORDINATE_ADDR, write_data, 1, 0, false);
      CY_ASSERT(rslt == CY_RSLT_SUCCESS);
 
     // Now read the data from that register
-    rslt = cyhal_i2c_master_read(&i2c_monarch_obj, LTR_SUBORDINATE_ADDR, &data, 1, 0, false);
+    rslt = cyhal_i2c_master_read(&i2c_monarch_obj, LTR_SUBORDINATE_ADDR, &data, 1, 0, true);
     CY_ASSERT(rslt == CY_RSLT_SUCCESS);
 
     return data;
@@ -123,6 +124,7 @@ void ltr_light_sensor_start(void)
     /* ADD CODE */
     uint8_t write_data[2] = {LTR_REG_CONTR, 0x03}; // 0011 (bit 0 control ALS MODE, bit 1 control SW reset)
     rslt = cyhal_i2c_master_write(&i2c_monarch_obj, LTR_SUBORDINATE_ADDR, write_data, 2, 0, true);
+
     CY_ASSERT(rslt == CY_RSLT_SUCCESS);
     
 

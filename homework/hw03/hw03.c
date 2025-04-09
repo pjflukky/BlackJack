@@ -72,7 +72,6 @@ void peripheral_init(void) {
  * @brief
  */
 void main_app(void) {
-
   printf("\x1b[2J\x1b[;H");
   printf("**************************************************\n\r");
   printf("* %s\n\r", APP_DESCRIPTION);
@@ -87,26 +86,35 @@ void main_app(void) {
   uint32_t reg_val = 0;
   // FONT color
   uint16_t font = 0xFFFF;
-  
+  screen_display_stats_funds(funds, font);
+  screen_display_stats_bet(bet, font);
 
 
   while (1) {
     // lux handle
-  if (ECE353_Events.lux_less_100)
+    
+  if (ECE353_Events.lux_less_100 == 1)
   {
-    font = 0x001F;
+    //font = LCD_COLOR_BLUE;
     ECE353_Events.lux_less_100 = 0;
+    screen_display_stats_funds(funds, font);
+    screen_display_stats_bet(bet, font);
   }
-  else if (ECE353_Events.lux_more_500)
+  else if (ECE353_Events.lux_more_500 == 1)
   {
-      font = 0x07E0;
+      font = LCD_COLOR_RED;
       ECE353_Events.lux_more_500 = 0;
+      screen_display_stats_funds(funds, font);
+      screen_display_stats_bet(bet, font);
   }
-  else if (ECE353_Events.lux_between)
+  else if (ECE353_Events.lux_between == 1)
   {
-    font = 0xF800;
+    font = LCD_COLOR_GREEN;
     ECE353_Events.lux_between = 0;
+    screen_display_stats_funds(funds, font);
+    screen_display_stats_bet(bet, font);
   }
+    
 
   // If the joystick moves up increment bet by 50
     if (ECE353_Events.joystick == 1 && Joystick_Pos == JOYSTICK_POS_UP)
@@ -118,6 +126,8 @@ void main_app(void) {
         funds += 50;
       }
       bet += 50;
+      screen_display_stats_funds(funds, font);
+      screen_display_stats_bet(bet, font);
     }
     // If down then decrement bet and make sure it is within the allowed bounds
     else if (ECE353_Events.joystick == 1 && Joystick_Pos == JOYSTICK_POS_DOWN)
@@ -130,6 +140,8 @@ void main_app(void) {
       {
         bet -= 50;
       }
+      screen_display_stats_funds(funds, font);
+      screen_display_stats_bet(bet, font);
     }
 
     reg_val = REG_PUSH_BUTTON_IN;
@@ -139,8 +151,6 @@ void main_app(void) {
       // TODO ADD CASE LOGIC FOR WHICH LED WILL TURN ON
     }
 
-  screen_display_stats_funds(funds, font);
-  screen_display_stats_bet(bet, font);
   }
 }
 

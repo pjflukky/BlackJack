@@ -24,8 +24,23 @@ cyhal_timer_cfg_t   Timer_MS_250_Cfg;
  void handler_timer_250_ms(void *callback_arg, cyhal_timer_event_t event)
  {
     uint16_t ch0 = ltr_light_sensor_get_ch0(); // get read value from channel 0
+  if (ch0 < 100) {
+    ECE353_Events.lux_less_100 = 1;
+    ECE353_Events.lux_more_500 = 0;
+    ECE353_Events.lux_between  = 0;
+}
+else if (ch0 > 500) {
+    ECE353_Events.lux_less_100 = 0;
+    ECE353_Events.lux_more_500 = 1;
+    ECE353_Events.lux_between  = 0;
+}
+else {
+    ECE353_Events.lux_less_100 = 0;
+    ECE353_Events.lux_more_500 = 0;
+    ECE353_Events.lux_between  = 1;
+}
 
- }
+}
 
  /**
   * @brief 

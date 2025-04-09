@@ -53,4 +53,9 @@ void io_expander_set_polarity_inversion(uint8_t value);
  */
 void io_expander_set_configuration(uint8_t value);
 
+void io_expander_enable_interrupt(void);
+
+void io_expander_interrupt_handler(void);
+ 
+
 #endif /* IO_EXPANDER_H_ */

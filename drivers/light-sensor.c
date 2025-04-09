@@ -70,18 +70,18 @@ uint8_t ltr_reg_read(uint8_t reg)
     cy_rslt_t rslt;
 
     uint8_t write_data[1] = {reg};
-    uint8_t data;
+    uint8_t data[1];
 
     /* ADD CODE */
      // First, write the register address to the sensor
-     rslt = cyhal_i2c_master_write(&i2c_monarch_obj, LTR_SUBORDINATE_ADDR, write_data, 1, 0, false);
+     rslt = cyhal_i2c_master_write(&i2c_monarch_obj, LTR_SUBORDINATE_ADDR, write_data, 1, 0, true);
      CY_ASSERT(rslt == CY_RSLT_SUCCESS);
 
     // Now read the data from that register
-    rslt = cyhal_i2c_master_read(&i2c_monarch_obj, LTR_SUBORDINATE_ADDR, &data, 1, 0, true);
+    rslt = cyhal_i2c_master_read(&i2c_monarch_obj, LTR_SUBORDINATE_ADDR, data, 1, 0, true);
     CY_ASSERT(rslt == CY_RSLT_SUCCESS);
 
-    return data;
+    return data[0];
 
 }
 /**
@@ -95,7 +95,7 @@ uint16_t ltr_light_sensor_get_ch0(void)
     uint8_t low_byte = ltr_reg_read(LTR_REG_ALS_DATA_CH0_0);
     uint8_t high_byte = ltr_reg_read(LTR_REG_ALS_DATA_CH0_1);
 
-    uint16_t ch0 = ((uint16_t)high_byte << 8) | low_byte;
+    uint16_t ch0 = (high_byte << 8) | low_byte;
     return ch0;
 }
 
@@ -110,7 +110,7 @@ uint16_t ltr_light_sensor_get_ch1(void)
     uint8_t low_byte = ltr_reg_read(LTR_REG_ALS_DATA_CH1_0);
     uint8_t high_byte = ltr_reg_read(LTR_REG_ALS_DATA_CH1_1);
 
-    uint16_t ch1 = ((uint16_t)high_byte << 8) | low_byte;
+    uint16_t ch1 = (high_byte << 8) | low_byte;
     return ch1;
 }
 
@@ -122,10 +122,15 @@ void ltr_light_sensor_start(void)
 {
     cy_rslt_t rslt;
     /* ADD CODE */
-    uint8_t write_data[2] = {LTR_REG_CONTR, 0x03}; // 0011 (bit 0 control ALS MODE, bit 1 control SW reset)
+    uint8_t write_data[2] = {LTR_REG_CONTR, LTR_REG_CONTR_SW_RESET}; // 0011 (bit 0 control ALS MODE, bit 1 control SW reset)
     rslt = cyhal_i2c_master_write(&i2c_monarch_obj, LTR_SUBORDINATE_ADDR, write_data, 2, 0, true);
+
+    cyhal_system_delay_ms(15);
+
+    uint8_t new_data[2] = {LTR_REG_CONTR, LTR_REG_CONTR_ALS_MODE}; // 0011 (bit 0 control ALS MODE, bit 1 control SW reset)
+    rslt = cyhal_i2c_master_write(&i2c_monarch_obj, LTR_SUBORDINATE_ADDR, new_data, 2, 0, true);
 
     CY_ASSERT(rslt == CY_RSLT_SUCCESS);
     
 
-}
+} 

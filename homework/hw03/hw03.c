@@ -85,35 +85,31 @@ void main_app(void) {
   uint16_t funds = score_read();
   uint32_t reg_val = 0;
   uint16_t led_case = 0;
+  uint16_t ch0 = 0;
+  uint16_t ch1 = 0;
+  
   // FONT color
   uint16_t font = 0xFFFF;
-  
 
 
   while (1) {
     // lux handle
-    
-  if (ECE353_Events.lux_less_100 == 1)
-  {
-    //font = LCD_COLOR_BLUE;
-    ECE353_Events.lux_less_100 = 0;
-    screen_display_stats_funds(funds, font);
-    screen_display_stats_bet(bet, font);
-  }
-  else if (ECE353_Events.lux_more_500 == 1)
-  {
+    if(ECE353_Events.lux_read == 1){
+      ch0 = ltr_light_sensor_get_ch0;
+    }
+
+    if(ch0 < 100){
+      font = LCD_COLOR_BLUE;
+    }
+    else if (ch0 > 500){
       font = LCD_COLOR_RED;
-      ECE353_Events.lux_more_500 = 0;
-      screen_display_stats_funds(funds, font);
-      screen_display_stats_bet(bet, font);
-  }
-  else if (ECE353_Events.lux_between == 1)
-  {
-    font = LCD_COLOR_GREEN;
-    ECE353_Events.lux_between = 0;
+    }
+    else{
+      font = LCD_COLOR_GREEN;
+    }
+    
     screen_display_stats_funds(funds, font);
     screen_display_stats_bet(bet, font);
-  }
     
 
   // If the joystick moves up increment bet by 50

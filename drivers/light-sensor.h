@@ -17,9 +17,9 @@
 #define LTR_SUBORDINATE_ADDR    0x29
 
 #define LTR_REG_CONTR           0x80
-#define LTR_REG_MEAS_RATE       0x03
-#define LTR_REG_PART_ID         0xA0
-#define LTR_REG_MANUFAC_ID      0x05
+#define LTR_REG_MEAS_RATE       0x85
+#define LTR_REG_PART_ID         0x86
+#define LTR_REG_MANUFAC_ID      0x87
 #define LTR_REG_ALS_DATA_CH1_0  0x88
 #define LTR_REG_ALS_DATA_CH1_1  0x89
 #define LTR_REG_ALS_DATA_CH0_0  0x8A

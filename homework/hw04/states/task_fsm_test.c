@@ -39,6 +39,14 @@ void task_fsm_test(void *param)
     {
         /* ADD CODE */
         /* Detect eg_UI events */
+        active_events = xEventGroupWaitBits(
+            eg_UI,
+            EVENT_UI_SW1 | EVENT_UI_SW2 | EVENT_UI_SW3 | EVENT_UI_JOY_UP | EVENT_UI_JOY_DOWN,
+            true,
+            false,
+            portMAX_DELAY
+        );
+
 
        if(active_events & EVENT_UI_SW1)
        {

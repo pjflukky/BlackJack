@@ -22,6 +22,9 @@ extern EventGroupHandle_t eg_UI;
  void task_joystick(void *param)
 {
     uint16_t test_num = 0;
+    joystick_position_t cur_pos = JOYSTICK_POS_CENTER;
+    joystick_position_t prev_pos = JOYSTICK_POS_CENTER;
+
 
     /* Suppress warning for unused parameter */
     (void)param;
@@ -30,6 +33,23 @@ extern EventGroupHandle_t eg_UI;
     for (;;)
     {
         /* ADD CODE */
+        vTaskDelay(pdMS_TO_TICKS(50));
+
+        // read joystick position
+        cur_pos = joystick_get_pos();
+
+        //determine if up or down and update event accordingly
+        if(cur_pos == JOYSTICK_POS_UP && prev_pos == JOYSTICK_POS_CENTER){
+            xEventGroupSetBits(eg_UI, EVENT_UI_JOY_UP);
+        }
+
+        if(cur_pos == JOYSTICK_POS_DOWN && prev_pos == JOYSTICK_POS_CENTER){
+            xEventGroupSetBits(eg_UI, EVENT_UI_JOY_DOWN);
+        }
+
+        //update position
+        prev_pos = cur_pos;
+
     }
 }
 

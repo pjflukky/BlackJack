@@ -28,16 +28,57 @@ extern EventGroupHandle_t eg_UI;
  */
 void task_switches(void *param)
 {
-    
-    
-
       /* Suppress warning for unused parameter */
       (void)param;
+
+      // switch's states for all 3 switches
+      button_state_t curr_sw1 = BUTTON_RELEASED;
+      button_state_t prev_sw1 = BUTTON_RELEASED;
+      button_state_t curr_sw2 = BUTTON_RELEASED;
+      button_state_t prev_sw2 = BUTTON_RELEASED;
+     
+
 
       /* Repeatedly running part of the task */
       for (;;)
       {
           /* ADD CODE */
+          vTaskDelay(pdMS_TO_TICKS(50));
+
+          // check switch press for all 3 switches
+          if((PORT_BUTTONS->IN & SW1_MASK) == 0){
+            curr_sw1 = BUTTON_PRESSED;
+          }
+          else{
+            curr_sw1 = BUTTON_RELEASED;
+          }
+
+          if((PORT_BUTTONS->IN & SW2_MASK) == 0){
+            curr_sw2 = BUTTON_PRESSED;
+          }
+          else{
+            curr_sw2 = BUTTON_RELEASED;
+          }
+
+         
+          ////////////////////////////////////////
+
+          if(curr_sw1 == BUTTON_RELEASED && prev_sw1 == BUTTON_PRESSED){
+            xEventGroupSetBits(eg_UI, EVENT_UI_SW1);
+          }
+
+          if(curr_sw2 == BUTTON_RELEASED && prev_sw2 == BUTTON_PRESSED){
+            xEventGroupSetBits(eg_UI, EVENT_UI_SW2);
+          }
+
+         
+
+
+          // update switch states
+          prev_sw1 = curr_sw1;
+          prev_sw2 = curr_sw2;
+          
+            
       }
 }
 

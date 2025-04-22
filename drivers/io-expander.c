@@ -113,5 +113,5 @@ void io_expander_enable_interrupt(void){
 }
 
 void io_expander_interrupt_handler(void *callback, cyhal_gpio_event_t event){
-
+	return;
 }

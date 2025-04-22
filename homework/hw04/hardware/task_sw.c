@@ -28,6 +28,9 @@ extern EventGroupHandle_t eg_UI;
  */
 void task_switches(void *param)
 {
+    
+    
+
       /* Suppress warning for unused parameter */
       (void)param;
 

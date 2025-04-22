@@ -17,8 +17,8 @@
 /* Global Variables                                                          */
 /*****************************************************************************/
 char APP_DESCRIPTION[] = "ECE353 S25 HW04";
-char APP_MEMBERS[] = "Name1, Name2";
-char APP_TEAM_NUM[] = "TeamXX";
+char APP_MEMBERS[] = "Pakorn Jantacumma, Ajinkya Dhamdhere";
+char APP_TEAM_NUM[] = "Team14";
 
  cyhal_trng_t trng_obj;
 

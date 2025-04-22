@@ -37,7 +37,9 @@
             "fonts.h": "c",
             "ece353_events.h": "c",
             "timer_050_ms.h": "c",
-            "eeprom.h": "c"
+            "eeprom.h": "c",
+            "freertos.h": "c",
+            "freertosconfig.h": "c"
         }
     },
     "extensions": {

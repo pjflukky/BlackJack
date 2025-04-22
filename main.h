@@ -52,7 +52,7 @@
 #include "drivers/light-sensor.h"
 
 /* Uncomment the line below to enable FreeRTOS in your applications*/
-//#define ECE353_FREERTOS
+#define ECE353_FREERTOS
 
 #if defined(ECE353_FREERTOS)
 /* FreeRTOS Includes */
@@ -102,8 +102,8 @@
 
 //#define HW01
 //#define HW02
-#define HW03
-//#define HW04
+//#define HW03
+#define HW04
 //#define HW05
 
 extern volatile ece353_events_t ECE353_Events;

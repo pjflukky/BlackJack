@@ -39,7 +39,7 @@
 #define   HW04_ENABLE_TASK_JOYSTICK
 #undef   HW04_ENABLE_TASK_EEPROM
 #undef   HW04_ENABLE_TASK_IO_EXPANDER
-#undef   HW04_ENABLE_TASK_LCD
+#define   HW04_ENABLE_TASK_LCD
 
 /* ADD CODE */
 /* When you are ready to test your FSM, change the following #define to #undef */

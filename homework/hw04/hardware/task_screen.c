@@ -1,14 +1,14 @@
 /**
  * @file task_lcd_game_stats.c
  * @author Joe Krachey (jkrachey@wisc.edu)
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2025-01-14
- * 
+ *
  * @copyright Copyright (c) 2025
- * 
+ *
  */
- #include "task_screen.h"
+#include "task_screen.h"
 #if defined(HW04)
 
 QueueHandle_t q_Screen;
@@ -23,6 +23,7 @@ QueueHandle_t q_Screen;
  */
 void task_screen(void *param)
 {
+    screen_data_t lcd_data;
     /* Suppress warning for unused parameter */
     (void)param;
 
@@ -30,6 +31,53 @@ void task_screen(void *param)
     for (;;)
     {
         /* ADD CODE */
+        xQueueReceive(q_Screen, &lcd_data, portMAX_DELAY);
+
+        switch (lcd_data.cmd)
+        {
+        case SCREEN_CMD_DRAW_CARD:
+        {
+            /* The operation indicates that we are drawing a card,
+              so treat the union as a card */
+            card_draw(&lcd_data.payload.card);
+            break;
+        }
+        case SCREEN_CMD_DRAW_STATS_FUNDS:
+        {
+            /* The operation indicated we are drawing the Funds to the LCD,
+              so treat the union as funds */
+            screen_display_stats_funds(lcd_data.payload.funds, lcd_data.font_color);
+            break;
+        }
+        case SCREEN_CMD_CLEAR_ALL:
+        {
+            /* The operation indicated we are clearing the LCD,
+              so treat the union as funds */
+            lcd_clear_screen(LCD_COLOR_BLACK);
+            break;
+        }
+        case SCREEN_CMD_DRAW_STATS_DEALER_HAND:
+        {
+            /* The operation indicated we are drawing the Dealer Hand to the LCD,
+              so treat the union as funds */
+            screen_display_stats_dealer_hand(lcd_data.payload.hand_value, lcd_data.font_color);
+            break;
+        }
+        case SCREEN_CMD_DRAW_STATS_PLAYER_HAND:
+        {
+            /* The operation indicated we are drawing the Player Hand to the LCD,
+              so treat the union as funds */
+            screen_display_stats_player_hand(lcd_data.payload.hand_value, lcd_data.font_color);
+            break;
+        }
+        case SCREEN_CMD_DRAW_STATS_BET:
+        {
+            /* The operation indicated we are drawing the Player Hand to the LCD,
+              so treat the union as funds */
+            screen_display_stats_bet(lcd_data.payload.bet, lcd_data.font_color);
+            break;
+        }
+        }
     }
 }
 

@@ -25,6 +25,9 @@ QueueHandle_t q_EEPROM;
  */
 void task_eeprom(void *param)
 {
+    eeprom_msg_t msg;
+    
+
     /* Suppress warning for unused parameter */
     (void)param;
 

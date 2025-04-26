@@ -43,7 +43,7 @@ extern EventGroupHandle_t eg_UI;
             xEventGroupSetBits(eg_UI, EVENT_UI_JOY_UP);
         }
 
-        if(cur_pos == JOYSTICK_POS_DOWN && prev_pos == JOYSTICK_POS_CENTER){
+        if(cur_post == JOYSTICK_POS_DOWN && prev_pos == JOYSTICK_POS_CENTER){
             xEventGroupSetBits(eg_UI, EVENT_UI_JOY_DOWN);
         }
 

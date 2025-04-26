@@ -63,6 +63,7 @@ void task_fsm_test(void *param)
            task_print_info("SW2 pressed");
      
            /* ADD CODE */
+           eeprom_msg_t msg;
            
            /* read score from EEPROM */
            /* Remember, you will need to send a message to the EEPROM Gate Keeper task */

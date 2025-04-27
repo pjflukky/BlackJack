@@ -61,18 +61,40 @@ void task_fsm_test(void *param)
        if(active_events & EVENT_UI_SW2)
        {
            task_print_info("SW2 pressed");
-     
-           /* ADD CODE */
            eeprom_msg_t msg;
-           
-           /* read score from EEPROM */
+
+             /* read score from EEPROM */
            /* Remember, you will need to send a message to the EEPROM Gate Keeper task */
            /* You cannot directly access hardware resources */
-           
-           /* Increment the score read from EEPROM */
-           
-           /* Write the score score EEPROM */
-       }
+
+            /* Create a queue to receive the score back from the EEPROM task */
+            QueueHandle_t return_queue = xQueueCreate(1, sizeof(uint16_t));
+
+            /* Set up the message to read from EEPROM */
+            msg.operation = EEPROM_READ;
+            msg.return_queue = return_queue;
+
+            /* Send the read request to the EEPROM task */
+            xQueueSend(q_EEPROM, &msg, portMAX_DELAY);
+
+            /* Wait for the score to be returned */
+            uint16_t current_score = 0;
+            xQueueReceive(return_queue, &current_score, portMAX_DELAY);
+
+            /* Increment the score read from EEPROM */
+            task_print_info("HIGH SCORE READ: %d", current_score);
+            current_score++;
+            task_print_info("HIGH SCORE WRITE: %d", current_score);
+
+            /* Write the new score to EEPROM */
+            msg.operation = EEPROM_WRITE;
+            msg.score = current_score;
+            msg.return_queue = NULL; /* No return needed for a write operation */
+            xQueueSend(q_EEPROM, &msg, portMAX_DELAY);
+
+            /* Clean up the queue */
+           // vQueueDelete(return_queue);
+        }
 
 
        if(active_events & EVENT_UI_JOY_DOWN)

@@ -9,6 +9,7 @@
  * 
  */
 #include "task_eeprom.h"
+#include "task_console.h"
 
 #if defined(HW04) 
 
@@ -26,7 +27,8 @@ QueueHandle_t q_EEPROM;
 void task_eeprom(void *param)
 {
     eeprom_msg_t msg;
-    
+    uint16_t score_addr = 0x1234;
+    uint16_t score = 0;
 
     /* Suppress warning for unused parameter */
     (void)param;
@@ -34,7 +36,29 @@ void task_eeprom(void *param)
     /* Repeatedly running part of the task */
     for (;;)
     {
-        /* ADD CODE */
+        /* Wait for a message in the queue */
+        if (xQueueReceive(q_EEPROM, &msg, portMAX_DELAY) == pdPASS)
+        {
+            /* Process the message based on operation type */
+            if (msg.operation == EEPROM_READ)
+            {
+                /* Read the score from EEPROM address 0 */
+                //score = eeprom_read_byte(score_addr);
+                
+                /* If a return queue was provided, send the score back */
+                if (msg.return_queue != NULL)
+                {
+                    xQueueSend(msg.return_queue, &score, portMAX_DELAY);
+                }
+            }
+            else if (msg.operation == EEPROM_WRITE)
+            {
+                /* Write the score to EEPROM score address*/
+                score = msg.score;
+                // eeprom_write_byte(score_addr, msg.score);
+            }
+        }
+       
     }
 }
 
@@ -47,6 +71,7 @@ void task_eeprom_init(void)
     eeprom_cs_init();
 
     q_EEPROM = xQueueCreate(1, sizeof(eeprom_msg_t));
+
 
     xTaskCreate(
         task_eeprom,

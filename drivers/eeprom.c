@@ -22,7 +22,7 @@ void eeprom_cs_init(void)
 
 	/* ADD CODE */
 	/* Initialize EEPROM Chip Select IO pins as an output*/
-	rslt = cyhal_gpio_init(PIN_SPI_EEPROM_CS, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_NONE, false);
+	rslt = cyhal_gpio_init(PIN_SPI_EEPROM_CS, CYHAL_GPIO_DIR_OUTPUT, CYHAL_GPIO_DRIVE_STRONG, false);
 
 	CY_ASSERT(rslt == CY_RSLT_SUCCESS); /* Halt MCU if init fails*/
 }

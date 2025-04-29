@@ -28,6 +28,14 @@ QueueHandle_t q_IO_Exp;
  void hw04_handler_io_exp(void *callback_arg, cyhal_gpio_event_t event)
  {
     /* ADD CODE */
+    /* Set the event bit in the event group to notify that IO expander button was pressed */
+    BaseType_t xHigherPriorityTaskWoken = pdFALSE;
+    
+    /* Set the EVENT_UI_IO_EXP_INT bit in the event group */
+    xEventGroupSetBitsFromISR(eg_UI, EVENT_UI_IO_EXP_INT, &xHigherPriorityTaskWoken);
+    
+    /* If a higher priority task was woken, request a context switch */
+    portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
  }
 
 /**

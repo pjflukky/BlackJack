@@ -43,7 +43,8 @@ void task_eeprom(void *param)
             if (msg.operation == EEPROM_READ)
             {
                 /* Read the score from EEPROM address 0 */
-                //score = eeprom_read_byte(score_addr);
+                score = eeprom_read_byte(score_addr);
+                task_print_info("score value: %d", score);
                 
                 /* If a return queue was provided, send the score back */
                 if (msg.return_queue != NULL)
@@ -55,7 +56,7 @@ void task_eeprom(void *param)
             {
                 /* Write the score to EEPROM score address*/
                 score = msg.score;
-                // eeprom_write_byte(score_addr, msg.score);
+                eeprom_write_byte(score_addr, msg.score);
             }
         }
        

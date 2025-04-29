@@ -61,7 +61,7 @@ bool hand_init(hand_t *hand)
  */
 static void hand_calc_value(hand_t *hand)
 {
-   hand->total = 0; /* Update the value with the calculated value */ 
+   hand->total = hand->total + hand_get_last_card(hand)->card_id; /* Update the value with the calculated value */ 
 }
 
 /**
@@ -84,12 +84,12 @@ bool hand_add_card(hand_t *hand, card_t *card)
     }
     
     /* Update the hand_index of the card */
-
+    card->hand_index++;
     /* Copy the card to the hand */
-
+    hand->cards->card_id = card->card_id;
     /* Increment the number of cards in the hand */
-
+    hand->num_cards++;
     /* Calculate the new total of the hand */
-
+    hand_calc_value(hand);
     return true;
 }

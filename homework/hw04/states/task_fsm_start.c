@@ -41,6 +41,7 @@ QueueHandle_t q_eeprom_fsm_start;
 void task_fsm_start(void *param)
 {
     bool state_active = false;
+    EventBits_t events;
 
     /* Suppress warning for unused parameter */
     (void)param;
@@ -59,9 +60,28 @@ void task_fsm_start(void *param)
     {
         if(state_active)
         {
+            xEventGroupClearBits(eg_UI, EVENT_UI_SW1 | EVENT_UI_SW2);
+            events = xEventGroupWaitBits(eg_UI,
+            EVENT_UI_SW1 | EVENT_UI_SW2,
+            true,
+            false,
+            portMAX_DELAY
+            );
+
+            if (events & EVENT_UI_SW2){
+                xTaskNotifyGive(Task_Handle_FSM_SHUFFLE);
+            }
+            if (events & EVENT_UI_IO_EXP_INT){
+                xQueueSend(q_EEPROM, 0, portMAX_DELAY);
+            }
+            state_active = false;
         }
         else
         {
+            ulTaskNotifyTake(true, portMAX_DELAY);
+            //Send to the Screen Queue
+            // xQueueSend(q_Screen, );
+            state_active = true;
         }
     }
 

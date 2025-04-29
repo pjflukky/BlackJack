@@ -27,6 +27,8 @@ void task_fsm_shuffle(void *param)
 
     while(1)
     {
+        deck_randomize(Game_Info.deck);
+        xTaskNotifyGive(Task_Handle_FSM_BET);
     }
 
 }

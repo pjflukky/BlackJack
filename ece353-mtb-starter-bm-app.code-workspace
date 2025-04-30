@@ -40,7 +40,8 @@
             "eeprom.h": "c",
             "freertos.h": "c",
             "freertosconfig.h": "c",
-            "hw04.h": "c"
+            "hw04.h": "c",
+            "task_console.h": "c"
         }
     },
     "extensions": {

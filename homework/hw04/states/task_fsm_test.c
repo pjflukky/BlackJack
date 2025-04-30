@@ -21,9 +21,11 @@ QueueHandle_t q_eeprom_fsm_test;
 void task_fsm_test(void *param)
 {
     EventBits_t active_events = 0;
-
+    uint8_t led_command = 0x00; // Turn on all LEDs, adjust as needed
     /* Suppress warning for unused parameter */
     (void)param;
+
+    task_print_info("IO Expander configuration set to 0x%02X", 0x80);
 
     /* Send the Clear Screen Escape Sequence*/
     task_print("\x1b[2J\x1b[;H");
@@ -41,7 +43,7 @@ void task_fsm_test(void *param)
         /* Detect eg_UI events */
         active_events = xEventGroupWaitBits(
             eg_UI,
-            EVENT_UI_SW1 | EVENT_UI_SW2 | EVENT_UI_SW3 | EVENT_UI_JOY_UP | EVENT_UI_JOY_DOWN,
+            EVENT_UI_SW1 | EVENT_UI_SW2 | EVENT_UI_SW3 | EVENT_UI_JOY_UP | EVENT_UI_JOY_DOWN | EVENT_UI_IO_EXP_INT,
             true,
             false,
             portMAX_DELAY
@@ -56,6 +58,17 @@ void task_fsm_test(void *param)
        /* Write to the IO Expander to turn on the LEDS */
        /* Remember, you will need to send a message to the IO Expander Gate Keeper task */
        /* You cannot directly access hardware resources */
+        /* Send a message to the IO Expander Gate Keeper task to turn on LEDs */
+        
+        if(led_command == 0xFF){
+            led_command == 0x00;   
+        }
+        
+        led_command++; // Turn on all LEDs, adjust as needed
+         
+        /* Send the message to the IO Expander queue */
+        xQueueSend(q_IO_Exp, &led_command, portMAX_DELAY);
+
        }
 
        if(active_events & EVENT_UI_SW2)
@@ -128,6 +141,7 @@ void task_fsm_test(void *param)
            /* Reset the high score in the EEPROM */
            /* Remember, you will need to send a message to the EEPROM Gate Keeper task */
            /* You cannot directly access hardware resources */
+
  
        }
     }

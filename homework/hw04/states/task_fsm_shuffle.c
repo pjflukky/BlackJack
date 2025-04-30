@@ -27,7 +27,13 @@ void task_fsm_shuffle(void *param)
 
     while(1)
     {
+        /* Wait for a task notification to become the active state*/
+        ulTaskNotifyTake(true, portMAX_DELAY);
+
+        // randomize deck
         deck_randomize(Game_Info.deck);
+
+        // give Notify to deck
         xTaskNotifyGive(Task_Handle_FSM_BET);
     }
 

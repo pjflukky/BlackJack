@@ -36,6 +36,9 @@ void task_fsm_shuffle(void *param)
 
         deck_init(Game_Info.deck);
         deck_randomize(Game_Info.deck);
+        hand_init(Game_Info.dealer_hand);
+        hand_init(Game_Info.player_hand);
+        
 
         // Release semaphore
         xSemaphoreGive(sem_Game_Info);

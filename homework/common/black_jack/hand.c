@@ -25,7 +25,7 @@ card_t * hand_get_last_card(hand_t *hand)
         return NULL;
     }
     else { 
-        return &hand->cards[hand->num_cards];
+        return &hand->cards[hand->num_cards-1];
     }
 }
 
@@ -82,11 +82,9 @@ bool hand_add_card(hand_t *hand, card_t *card)
     {
         return false;
     }
-    
-    /* Update the hand_index of the card */
-    card->hand_index++;
+
     /* Copy the card to the hand */
-    hand->cards->card_id = card->card_id;
+    hand->cards[hand->num_cards] = *card;
     /* Increment the number of cards in the hand */
     hand->num_cards++;
     /* Calculate the new total of the hand */

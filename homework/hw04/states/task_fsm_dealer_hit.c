@@ -33,9 +33,14 @@ void task_fsm_dealer_hit(void *param)
 {
     /* Suppress warning for unused parameter */
     (void)param;
+    screen_data_t screen_data;
+    EventBits_t events;
+    int offset = 0;
 
     while(1)
     {
+
+
     }
 
 }

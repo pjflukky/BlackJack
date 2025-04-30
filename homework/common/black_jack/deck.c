@@ -31,13 +31,14 @@ bool deck_init(deck_t *deck)
 
     //Initial Index is 0
     int index = 0;
+    deck->card_index = 0;
     //Outside for loop deals with suits
     for (int suit = 0; suit <= 3; suit++) {
         //Inside for loop deals with card value
         for (int number = 2; number <= 14; number++) {
             deck->cards[index].suit = (image_type_t)suit;
             deck->cards[index].border_color = LCD_COLOR_BLUE;
-            deck->cards[index].hidden = true;
+            deck->cards[index].hidden = false;
 
 
             // Using a switch to deal with J, Q, K, A because 10, 12, 13, 14 won't work

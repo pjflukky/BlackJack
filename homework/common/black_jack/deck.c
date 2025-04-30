@@ -63,10 +63,6 @@ bool deck_init(deck_t *deck)
                     break;
             }
 
-
-            printf("Deck[%d]: Suit=%d, Rank=%c, Hidden=%d\n", 
-                   index, deck->cards[index].suit, deck->cards[index].card_id, deck->cards[index].hidden);
-
             //Increment index
             index++;
         }

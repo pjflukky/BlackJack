@@ -82,6 +82,9 @@ void task_io_expander_init(void)
     /* Set all pins as outputs except for the IO_EXP_INT pin */
     io_expander_set_configuration(0x80);
 
+    // set led to all off first 
+    io_expander_set_output_port(0x00);
+
     /* Enable interrupts from the IO expander on the PSoC6*/
     /* ADD CODE */
 

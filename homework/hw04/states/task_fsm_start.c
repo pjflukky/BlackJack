@@ -42,6 +42,10 @@ void task_fsm_start(void *param)
 {
     bool state_active = false;
     EventBits_t events;
+    screen_data_t screen_data;
+    eeprom_msg_t msg;
+    QueueHandle_t return_queue = xQueueCreate(1, sizeof(uint16_t));
+
 
     /* Suppress warning for unused parameter */
     (void)param;
@@ -60,9 +64,9 @@ void task_fsm_start(void *param)
     {
         if(state_active)
         {
-            xEventGroupClearBits(eg_UI, EVENT_UI_SW1 | EVENT_UI_SW2);
+            xEventGroupClearBits(eg_UI, EVENT_UI_IO_EXP_INT | EVENT_UI_SW2);
             events = xEventGroupWaitBits(eg_UI,
-            EVENT_UI_SW1 | EVENT_UI_SW2,
+            EVENT_UI_IO_EXP_INT | EVENT_UI_SW2,
             true,
             false,
             portMAX_DELAY
@@ -78,10 +82,41 @@ void task_fsm_start(void *param)
         }
         else
         {
+            //wait for Notify from hw04.c
             ulTaskNotifyTake(true, portMAX_DELAY);
-            //Send to the Screen Queue
-            // xQueueSend(q_Screen, );
-            state_active = true;
+
+            // Set up the game
+            xSemaphoreTake(sem_Game_Info, portMAX_DELAY);
+
+            // Initialize player funds and bet
+            Game_Info.player_funds = 1000;
+            Game_Info.player_bet = 50;
+
+             // Release semaphore
+            xSemaphoreGive(sem_Game_Info);
+
+             // activate the state
+             state_active = true;
+
+            // Read high score from EEPROM
+            msg.operation = EEPROM_READ;
+            msg.return_queue = return_queue;
+            xQueueSend(q_EEPROM, &msg, portMAX_DELAY);
+            uint16_t high_score = 0;
+            xQueueReceive(return_queue, &high_score, portMAX_DELAY);
+
+            // clear screen just in case
+            screen_data.cmd = SCREEN_CMD_CLEAR_ALL;
+            xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
+
+             // Display start screen
+             screen_data.cmd = SCREEN_CMD_DRAW_SPLASH_SCREEN;
+             xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
+
+            task_print_info("High Score: %d", high_score);
+            task_print_info("current state: start");
+
+
         }
     }
 

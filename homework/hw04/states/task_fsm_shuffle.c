@@ -31,10 +31,19 @@ void task_fsm_shuffle(void *param)
         ulTaskNotifyTake(true, portMAX_DELAY);
 
         // randomize deck
+        // Take semaphore to access Game_Info
+        xSemaphoreTake(sem_Game_Info, portMAX_DELAY);
+
+        deck_init(Game_Info.deck);
         deck_randomize(Game_Info.deck);
 
+        // Release semaphore
+        xSemaphoreGive(sem_Game_Info);
+
         // give Notify to deck
+        task_print_info("current state: shuffle");
         xTaskNotifyGive(Task_Handle_FSM_BET);
+
     }
 
 }

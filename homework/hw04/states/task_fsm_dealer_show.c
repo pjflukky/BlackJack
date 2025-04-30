@@ -29,6 +29,8 @@ TaskHandle_t Task_Handle_FSM_DEALER_SHOW;
 void task_fsm_dealer_show(void *param)
 {
     bool state_active = false;
+    screen_data_t screen_data;
+    EventBits_t events;
 
 
     /* Suppress warning for unused parameter */
@@ -41,6 +43,31 @@ void task_fsm_dealer_show(void *param)
         }
         else
         {
+             //wait for Notify from shuffle states
+             ulTaskNotifyTake(true, portMAX_DELAY);
+
+            // activate the state
+            state_active = true;
+
+            // clear screen just in case
+            screen_data.cmd = SCREEN_CMD_CLEAR_ALL;
+            xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
+
+              // Display funds
+              screen_data.cmd = SCREEN_CMD_DRAW_STATS_FUNDS;
+              screen_data.payload.funds = Game_Info.player_funds;
+              screen_data.font_color = LCD_COLOR_GREEN;
+              xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
+  
+              // Display bet
+              screen_data.cmd = SCREEN_CMD_DRAW_STATS_BET;
+              screen_data.payload.bet = Game_Info.player_bet;
+              screen_data.font_color = LCD_COLOR_GREEN;
+              xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
+
+            // Take semaphore to access Game_Info
+          //  xSemaphoreTake(sem_Game_Info, portMAX_DELAY);
+        
         }
     }
 

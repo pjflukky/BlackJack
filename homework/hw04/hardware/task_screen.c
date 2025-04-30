@@ -35,6 +35,39 @@ void task_screen(void *param)
 
         switch (lcd_data.cmd)
         {
+
+          case SCREEN_CMD_DRAW_BET_SCREEN:
+          {
+              // draw a start screen
+            lcd_draw_image(
+              160,
+              120,
+              IMAGE_PIXELS_WIDTH_BET_SCREEN,
+              IMAGE_PIXELS_HEIGHT_BET_SCREEN,
+              IMAGE_BITMAP_BET_SCREEN,
+              LCD_COLOR_BLUE,
+              LCD_COLOR_BLACK,
+              true
+            );
+            break;
+          }
+
+        case SCREEN_CMD_DRAW_SPLASH_SCREEN:
+        {
+            // draw a start screen
+            lcd_draw_image(
+              160,
+              120,
+              IMAGE_PIXELS_WIDTH_START_SCREEN,
+              IMAGE_PIXELS_HEIGHT_START_SCREEN,
+              IMAGE_BITMAP_START_SCREEN,
+              LCD_COLOR_RED,
+              LCD_COLOR_BLACK,
+              true
+            );
+            break;
+        }
+
         case SCREEN_CMD_DRAW_CARD:
         {
             /* The operation indicates that we are drawing a card,
@@ -77,6 +110,8 @@ void task_screen(void *param)
             screen_display_stats_bet(lcd_data.payload.bet, lcd_data.font_color);
             break;
         }
+
+        
         }
     }
 }

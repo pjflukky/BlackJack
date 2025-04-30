@@ -43,7 +43,7 @@
 
 /* ADD CODE */
 /* When you are ready to test your FSM, change the following #define to #undef */
-#define HW04_ENABLE_TASK_TEST
+#undef HW04_ENABLE_TASK_TEST
 
 /* FSM Task Handles */
 extern TaskHandle_t Task_Handle_FSM_BET;

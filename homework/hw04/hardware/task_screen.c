@@ -110,6 +110,13 @@ void task_screen(void *param)
             screen_display_stats_bet(lcd_data.payload.bet, lcd_data.font_color);
             break;
         }
+        case SCREEN_CMD_CLEAR_STATS:
+        {
+          /* The operation indicated we are clearing the stats */
+            screen_display_stats_dealer_hand(888, LCD_COLOR_BLACK);
+            screen_display_stats_player_hand(888, LCD_COLOR_BLACK);
+            break;
+        }
 
         
         }

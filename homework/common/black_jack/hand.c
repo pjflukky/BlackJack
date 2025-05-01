@@ -1,53 +1,54 @@
 /**
  * @file hand.c
  * @author
- * @brief 
+ * @brief
  * @version 0.1
  * @date 2025-01-16
- * 
+ *
  * @copyright Copyright (c) 2025
- * 
+ *
  */
 
- #include "hand.h"
+#include "hand.h"
 #include "card.h"
 
- /**
- * @brief 
+/**
+ * @brief
  * Returns the address of the last card added to the hand
- * @param hand 
- * @return card_t* 
+ * @param hand
+ * @return card_t*
  */
-card_t * hand_get_last_card(hand_t *hand)
+card_t *hand_get_last_card(hand_t *hand)
 {
-    if( hand == NULL)
+    if (hand == NULL)
     {
         return NULL;
     }
-    else { 
-        return &hand->cards[hand->num_cards-1];
+    else
+    {
+        return &hand->cards[hand->num_cards - 1];
     }
 }
 
 /**
- * @brief 
+ * @brief
  * Used to initialize a hand. All data fields will be set to 0
- * @param hand 
- * @return true 
- * @return false 
+ * @param hand
+ * @return true
+ * @return false
  */
 bool hand_init(hand_t *hand)
 {
-    if(hand != NULL)
+    if (hand != NULL)
     {
         /* While not necessary, we will zero out the memory
            used to store the cards */
-        memset(hand->cards, 0, 11*sizeof(card_t));
+        memset(hand->cards, 0, 11 * sizeof(card_t));
         hand->num_cards = 0;
         hand->total = 0;
         return true;
     }
-    else 
+    else
     {
         /* NULL pointer passed in */
         return false;
@@ -55,30 +56,83 @@ bool hand_init(hand_t *hand)
 }
 
 /**
- * @brief 
+ * @brief
  * Calculates the value of a players hand.
- * @return 
+ * @return
  */
 static void hand_calc_value(hand_t *hand)
 {
-   hand->total = hand->total + hand_get_last_card(hand)->card_id; /* Update the value with the calculated value */ 
+    char id = (hand_get_last_card(hand))->card_id;
+    uint16_t toAdd = 0;
+
+    switch (id)
+    {
+    case '2':
+        toAdd = 2;
+        break;
+    case '3':
+        toAdd = 3;
+        break;
+    case '4':
+        toAdd = 4;
+        break;
+    case '5':
+        toAdd = 5;
+        break;
+    case '6':
+        toAdd = 6;
+        break;
+    case '7':
+        toAdd = 7;
+        break;
+    case '8':
+        toAdd = 8;
+        break;
+    case '9':
+        toAdd = 9;
+        break;
+    case 'T':
+        toAdd = 10;
+        break;
+    case 'J':
+        toAdd = 10;
+        break;
+    case 'Q':
+        toAdd = 10;
+        break;
+    case 'K':
+        toAdd = 10;
+        break;
+    case 'A':
+        if (hand->total + 11 > 21)
+        {
+            toAdd = 1;
+        }
+        else
+        {
+            toAdd = 11;
+        }
+
+        break;
+    }
+    hand->total += toAdd;
 }
 
 /**
- * @brief 
+ * @brief
  * Adds a card to the player's hand
  * @param hand
- *  Address of the hand data structure 
+ *  Address of the hand data structure
  * @param card
- *  Address of the card to add to the hand 
+ *  Address of the card to add to the hand
  * @return true
- *  card successfully added 
+ *  card successfully added
  * @return false
- *  card not added to the hand 
+ *  card not added to the hand
  */
 bool hand_add_card(hand_t *hand, card_t *card)
 {
-    if( hand == NULL || card == NULL)
+    if (hand == NULL || card == NULL)
     {
         return false;
     }

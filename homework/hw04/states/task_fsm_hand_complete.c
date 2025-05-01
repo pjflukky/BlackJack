@@ -75,11 +75,16 @@ void task_fsm_hand_complete(void *param)
             msg.operation = EEPROM_READ;
             msg.return_queue = xQueueCreate(1, sizeof(QueueHandle_t));
             xQueueSend(q_EEPROM, &msg, portMAX_DELAY);
-            if (Game_Info.player_funds > score)
+
+             /* Wait for the score to be returned */
+            uint16_t current_score = 0;
+            xQueueReceive(msg.return_queue, &current_score, portMAX_DELAY);
+            if (Game_Info.player_funds > current_score)
             {
                 msg.score = Game_Info.player_funds;
                 msg.operation = EEPROM_WRITE;
                 xQueueSend(q_EEPROM, &msg, portMAX_DELAY);
+                 task_print_info("High Score: %d",  Game_Info.player_funds);
             }
 
             // If the player funds is equal to 0, transition to the START state.

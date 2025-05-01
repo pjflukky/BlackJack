@@ -94,11 +94,11 @@ void task_io_expander_init(void)
         P11_2,                      /* IO Expander interrupt pin */
         CYHAL_GPIO_DIR_INPUT,       /* Input direction */
         CYHAL_GPIO_DRIVE_PULLUP,      /* No drive mode for input */
-        false                  /* Initial state LOW */
+        true                  /* Initial state LOW */
     );
     
     /* Register the callback function */
-    cyhal_gpio_callback_data_t cb_data;
+    static cyhal_gpio_callback_data_t cb_data;
     cb_data.callback = hw04_handler_io_exp;
     cb_data.callback_arg = NULL;
 

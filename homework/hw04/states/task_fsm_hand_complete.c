@@ -99,6 +99,7 @@ void task_fsm_hand_complete(void *param)
                 }
             }
             xSemaphoreGive(sem_Game_Info);
+            state_active = false;
         }
         else
         {

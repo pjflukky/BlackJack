@@ -296,3 +296,32 @@ void screen_display_stats_player_hand(int16_t hand_value, uint16_t fcolor)
        
     }
 }
+
+void screen_display_string(char *s, uint16_t loc_x, uint16_t loc_y, uint16_t fcolor, uint16_t bcolor){
+      
+        for(int i = 0; s[i] != NULL; i++){
+            // initialize number character pointer 
+            image_t C;
+            font_get_image(s[i], &C);
+
+            lcd_draw_rectangle(
+                loc_x - 4 +(i*20), // x start
+                C.width + 8,
+                loc_y - 10 - 4, // y start
+                C.height + 8,
+                fcolor,
+                false);
+
+
+            // draw the character
+            lcd_draw_image(
+                loc_x + (i*20),
+                loc_y - 10,
+                C.width,
+                C.height,
+                C.bitmap,
+                fcolor,
+                C.bcolor,
+                false);
+        }
+}

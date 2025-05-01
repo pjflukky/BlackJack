@@ -309,7 +309,7 @@ void screen_display_string(char *s, uint16_t loc_x, uint16_t loc_y, uint16_t fco
                 C.width + 8,
                 loc_y - 10 - 4, // y start
                 C.height + 8,
-                fcolor,
+                LCD_COLOR_BLACK,
                 false);
 
 

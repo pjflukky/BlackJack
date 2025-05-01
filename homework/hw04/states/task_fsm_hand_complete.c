@@ -58,6 +58,7 @@ void task_fsm_hand_complete(void *param)
     bool state_active = false;
     EventBits_t events;
     screen_data_t screen_data;
+    uint8_t led_command = 0x00;
 
     while (1)
     {
@@ -112,7 +113,7 @@ void task_fsm_hand_complete(void *param)
             xSemaphoreTake(sem_Game_Info, portMAX_DELAY);
 
             // LOGIC FOR WIN
-            if (Game_Info.player_hand->total > Game_Info.dealer_hand->total)
+            if ((Game_Info.player_hand->total > Game_Info.dealer_hand->total && Game_Info.player_hand->total <= 21) || Game_Info.dealer_hand->total > 21 )
             {
                 // Add the bet amount to the player funds
                 Game_Info.player_funds += Game_Info.player_bet;
@@ -132,13 +133,17 @@ void task_fsm_hand_complete(void *param)
                     screen_data.cmd = SCREEN_CMD_DRAW_STATS_FUNDS;
                     screen_data.font_color = LCD_COLOR_BLACK;
                     xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
+                    vTaskDelay(pdMS_TO_TICKS(250));
                     screen_data.font_color = LCD_COLOR_GREEN;
                     xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
-                    cyhal_system_delay_ms(250);
+                    
                 }
 
                 // Display the player's current win streak on the IO Expander
                 // TODO
+                led_command = (led_command << 1) + 1;
+                xQueueSend(q_IO_Exp, &led_command, portMAX_DELAY);
+
             }
 
             // LOGIC FOR PUSH
@@ -149,7 +154,7 @@ void task_fsm_hand_complete(void *param)
                 screen_data.payload.str_ptr = PUSH;
                 xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
 
-                cyhal_system_delay_ms(2000);
+                vTaskDelay(pdMS_TO_TICKS(2000));
             }
 
             // LOGIC FOR LOSE
@@ -173,13 +178,16 @@ void task_fsm_hand_complete(void *param)
                     screen_data.cmd = SCREEN_CMD_DRAW_STATS_FUNDS;
                     screen_data.font_color = LCD_COLOR_BLACK;
                     xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
+                    vTaskDelay(pdMS_TO_TICKS(250));
                     screen_data.font_color = LCD_COLOR_GREEN;
                     xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
-                    cyhal_system_delay_ms(250);
+                    
                 }
 
                 // Set the player's current win streak to 0 and update the IO Expander
                 // TODO
+                led_command = 0x00;
+                xQueueSend(q_IO_Exp, &led_command, portMAX_DELAY);
             }
             xSemaphoreGive(sem_Game_Info);
         }

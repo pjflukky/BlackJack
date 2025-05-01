@@ -46,6 +46,7 @@ void task_fsm_dealer_hit(void *param)
 
         // activate the state
         state_active = true;
+        offset = 0;
 
         // clear screen just in case
         screen_data.cmd = SCREEN_CMD_CLEAR_ALL;
@@ -69,6 +70,7 @@ void task_fsm_dealer_hit(void *param)
         // Display player hand value
         screen_data.cmd = SCREEN_CMD_DRAW_STATS_PLAYER_HAND;
         screen_data.payload.hand_value = Game_Info.player_hand->total;
+        int player_value = screen_data.payload.hand_value;
         screen_data.font_color = LCD_COLOR_GREEN;
         xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
 
@@ -124,6 +126,7 @@ void task_fsm_dealer_hit(void *param)
             // Give the semaphore back
             xSemaphoreGive(sem_Game_Info);
         }
+         xTaskNotifyGive(Task_Handle_FSM_HAND_COMPLETE);
     }
 }
 

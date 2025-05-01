@@ -105,8 +105,11 @@ void task_fsm_hit(void *param)
         }
         else
         {
+        
             // wait for Notify from shuffle states
             ulTaskNotifyTake(true, portMAX_DELAY);
+            offset = 0;
+            hitcard = 1;
 
             // activate the state
             state_active = true;
@@ -144,7 +147,7 @@ void task_fsm_hit(void *param)
             hand_add_card(Game_Info.player_hand, &Game_Info.deck->cards[Game_Info.deck->card_index]); // card 1 from deck
             screen_data.cmd = SCREEN_CMD_DRAW_CARD;
             screen_data.payload.card = Game_Info.player_hand->cards[1];
-            screen_data.payload.card.hand_index = offset;
+            screen_data.payload.card.hand_index = 1;
             xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
 
             // Display hand value

@@ -56,6 +56,11 @@ void task_fsm_bet(void *param)
             portMAX_DELAY
             );
 
+            xSemaphoreTake(sem_Game_Info, portMAX_DELAY);
+
+            hand_init(Game_Info.dealer_hand);
+            hand_init(Game_Info.player_hand);
+
             //event joy up
             if (events & EVENT_UI_JOY_UP){
                 if(Game_Info.player_bet + 50 <= Game_Info.player_funds)
@@ -108,11 +113,16 @@ void task_fsm_bet(void *param)
             xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
             }
 
+            Game_Info.player_hand->total = 0;
+            Game_Info.player_hand->cards->hand_index = 0;
+
             //event switch 1
             if (events & EVENT_UI_SW1){
                 xTaskNotifyGive(Task_Handle_FSM_DEALER_SHOW);
                 state_active = false;
             }
+
+            xSemaphoreGive(sem_Game_Info);
               
         }
 

@@ -96,7 +96,7 @@ void task_fsm_dealer_show(void *param)
       screen_data.cmd = SCREEN_CMD_DRAW_CARD;
 
       screen_data.payload.card = Game_Info.dealer_hand->cards[1];
-      //screen_data.payload.card.hidden = true;
+      screen_data.payload.card.hidden = true;
       screen_data.payload.card.hand_index++;
       xQueueSend(q_Screen, &screen_data, portMAX_DELAY);
 

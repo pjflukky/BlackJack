@@ -85,6 +85,17 @@ void task_fsm_start(void *param)
             //wait for Notify from hw04.c
             ulTaskNotifyTake(true, portMAX_DELAY);
 
+            msg.operation = EEPROM_READ;
+            msg.return_queue = return_queue;
+
+            /* Send the read request to the EEPROM task */
+            xQueueSend(q_EEPROM, &msg, portMAX_DELAY);
+
+            /* Wait for the score to be returned */
+            uint16_t current_score = 0;
+            xQueueReceive(return_queue, &current_score, portMAX_DELAY);
+
+
             // Set up the game
             xSemaphoreTake(sem_Game_Info, portMAX_DELAY);
 

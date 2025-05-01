@@ -118,6 +118,11 @@ void task_screen(void *param)
             break;
         }
 
+        case SCREEN_CMD_DRAW_HAND_STATUS:
+        {
+          screen_display_string(lcd_data.payload.str_ptr, LOC_HAND_STATUS_X, LOC_HAND_STATUS_Y, LCD_COLOR_GREEN, LCD_COLOR_BLACK);
+        }
+
         
         }
     }
